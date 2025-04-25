@@ -22,22 +22,25 @@ class Sea extends Phaser.Scene {
 
     create(){
         let my = this.my;
-
-        my.sprite.pirateShip = this.add.sprite(this.originX, this.originY, "pirateMisc", "ship (2).png").setScale(0.5).setAngle(270);
-
         this.pointer = this.input.activePointer;
-
-        this.input.on('pointerdown', (pointer) => {
-            if(pointer.leftButtonDown()) {
-                my.sprite.cannonball = this.add.sprite(my.sprite.pirateShip.x + 50, my.sprite.pirateShip.y, "pirateMisc", "cannonBall.png");
-                this.sound.play("cannonFire", {volume: 0.5});
-            }
-        });
-
+        
         this.keyUp = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
         this.keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         this.keyDown = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
         this.keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+
+        my.sprite.pirateShip = this.add.sprite(this.originX, this.originY, "pirateMisc", "ship (2).png").setScale(0.5).setAngle(270);
+
+        this.input.on('pointerdown', (pointer) => {
+            if(pointer.leftButtonDown()) {
+                this.add.sprite(my.sprite.pirateShip.x + 50, my.sprite.pirateShip.y, "pirateMisc", "cannonBall.png");
+                this.add.sprite(my.sprite.pirateShip.x + 30, my.sprite.pirateShip.y, "pirateMisc", "fire1.png").setScale(0.8).setAngle(90);
+                this.add.sprite(my.sprite.pirateShip.x + 30, my.sprite.pirateShip.y, "pirateMisc", "fire2.png").setScale(0.8).setAngle(90).setFlipX(true);
+                
+                this.sound.play("cannonFire", {volume: 0.5});
+            }
+        });
+
     }
 
     update(){
