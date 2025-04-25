@@ -43,6 +43,10 @@ class Sea extends Phaser.Scene {
             }
         });
 
+        const waterRush = this.sound.add("waterRush");
+        waterRush.play({loop: true, volume: 0.2});
+        const windAmbience = this.sound.add("windAmbience");
+        windAmbience.play({loop: true, volume: 0.2});
     }
 
     update(){
