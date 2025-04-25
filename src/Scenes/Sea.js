@@ -26,16 +26,18 @@ class Sea extends Phaser.Scene {
 
     create(){
         let my = this.my;
-        this.cannonShots = [];
-        this.cannonSmoke = [];
+        my.sprite.cannonShots = [];
+        my.sprite.cannonSmoke = [];
         this.pointer = this.input.activePointer;
         
         this.keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         this.keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
 
         my.sprite.pirateShip = this.add.sprite(this.originX, this.originY, "pirateMisc", "ship (2).png").setScale(0.6).setAngle(270);
+        //let pirateTexture = this.textures.get("pirateMisc").get("ship (2).png");
+        //my.sprite.pirateShip = new PlayerShip(this, this.originX, this.originY, pirateTexture, null, this.keyW, this.keyS);
 
-        this.cannonFire(this.cannonShots, this.cannonSmoke, my.sprite.pirateShip);
+        this.cannonFire(my.sprite.cannonShots, my.sprite.cannonSmoke, my.sprite.pirateShip);
 
         const waterRush = this.sound.add("waterRush");
         const windAmbience = this.sound.add("windAmbience");
@@ -92,11 +94,19 @@ class Sea extends Phaser.Scene {
             my.sprite.pirateShip.y += pirateSpeed;
         }
         
-        for(let shot of this.cannonShots) {
+        for(let shot of my.sprite.cannonShots) {
             shot.x += cannonShotSpeed;
             if (shot.x > game.config.width) {
                 shot.destroy();
             }
         }
+
+        //my.sprite.cannonShots = my.sprite.cannonShots.filter((shot) => shot.x > game.config.width);
+
+        let count = 0;
+        for (let shot of my.sprite.cannonShots){
+            count++;
+        }
+        console.log("Shots: " + count);
     }
 }

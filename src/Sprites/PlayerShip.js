@@ -5,7 +5,7 @@ class PlayerShip extends Phaser.GameObjects.Sprite {
         this.up = keyW;
         this.down = keyS;
         this.health = 15;
-        this.speed = 5;
+        this.speed = 6;
         this.setScale(0.6);
         this.setAngle(270);
 
