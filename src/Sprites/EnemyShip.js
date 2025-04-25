@@ -8,7 +8,6 @@ class EnemyShip extends Phaser.GameObjects.Sprite {
     }
 
     update() {
-        this.x -= 2;
     }
 
     // fires 3 shots, curved path
