@@ -60,4 +60,26 @@ class Ship extends Phaser.GameObjects.Sprite {
             this.speed = 1;
         }
     }
+
+    // pirate ship
+    static PirateShip = class extends Ship {
+        constructor(scene, x, y) {
+            super(scene, x, y);
+            this.health = 15;
+            this.points = null;
+            this.speed = 5;
+        }
+
+        update() {
+            if (this.y < 100 && this.y > game.config.height) {
+                if((this.keyUp.isDown || this.keyW.isDown && !(this.keyDown.isDown || this.keyS.isDown))) {
+                    this.y -= speed;
+                }
+        
+                if(this.keyDown.isDown || this.keyS.isDown && !(this.keyUp.isDown || this.keyW.isDown)) {
+                    this.y += speed;
+                }
+            }
+        }
+    }
 }
