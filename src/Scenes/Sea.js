@@ -61,15 +61,14 @@ class Sea extends Phaser.Scene {
                 
                 cannonSmoke.push(this.add.sprite(ship.x + offsetSmoke, ship.y, "tanks", "smokeWhite0.png").setScale(0.3));
 
-                for (let i=0; i<cannonSmoke.length; i++) {
+                for (let smoke of cannonSmoke) {
                     this.tweens.add({
-                        targets: cannonSmoke[i],
+                        targets: smoke,
                         alpha: 0,
                         duration: 1000,
-                        delay: 0,
                         ease: "Linear",
                         onComplete: () => {
-                            cannonSmoke[i].destroy();
+                            smoke.destroy();
                         }
                     });
                 }
