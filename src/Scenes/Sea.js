@@ -12,6 +12,7 @@ class Sea extends Phaser.Scene {
 
         this.load.atlasXML("pirateMisc", "piratePack_ships_spritesheet.png", "piratePack_ships_spritesheet.xml");
         this.load.atlasXML("uiAdventure", "ui_adventure_spritesheet", "ui_adventure_spritesheet.xml");
+        this.load.atlasXML("tanks", "tanks_spritesheet.png", "tanks_spritesheet.xml");
         // this.load.image("pirateTiles", "piratePack_tilesheet"); // tiles
 
         this.load.audio("cannonFire", "cannonFire.mp3");
@@ -34,8 +35,7 @@ class Sea extends Phaser.Scene {
         this.input.on('pointerdown', (pointer) => {
             if(pointer.leftButtonDown()) {
                 this.add.sprite(my.sprite.pirateShip.x + 50, my.sprite.pirateShip.y, "pirateMisc", "cannonBall.png");
-                this.add.sprite(my.sprite.pirateShip.x + 30, my.sprite.pirateShip.y, "pirateMisc", "fire1.png").setScale(0.8).setAngle(90);
-                this.add.sprite(my.sprite.pirateShip.x + 30, my.sprite.pirateShip.y, "pirateMisc", "fire2.png").setScale(0.8).setAngle(90).setFlipX(true);
+                my.sprite.smoke = this.add.sprite(my.sprite.pirateShip.x + 30, my.sprite.pirateShip.y, "tanks", "smokeWhite5.png").setScale(0.3).setAlpha(0.8);
                 
                 this.sound.play("cannonFire", {volume: 0.5});
             }
