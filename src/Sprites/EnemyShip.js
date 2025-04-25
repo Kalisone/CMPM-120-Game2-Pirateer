@@ -11,7 +11,7 @@ class EnemyShip extends Phaser.GameObjects.Sprite {
     }
 
     // fires 3 shots, curved path
-    static RedCross = class extends Ship {
+    static RedCross = class extends EnemyShip {
         constructor(scene, x, y, texture, frame) {
             super(scene, x, y, texture, frame);
             this.health = 15;
@@ -21,7 +21,7 @@ class EnemyShip extends Phaser.GameObjects.Sprite {
     }
 
     // fires heavy shot, straight path
-    static GreenSwords = class extends Ship {
+    static GreenSwords = class extends EnemyShip {
         constructor(scene, x, y, texture, frame) {
             super(scene, x, y, texture, frame);
             this.health = 3;
@@ -31,7 +31,7 @@ class EnemyShip extends Phaser.GameObjects.Sprite {
     }
 
     // fires sideways, faster, straight path
-    static BlueCavalier = class extends Ship {
+    static BlueCavalier = class extends EnemyShip {
         constructor(scene, x, y, texture, frame) {
             super(scene, x, y, texture, frame);
             this.health = 3;
@@ -41,7 +41,7 @@ class EnemyShip extends Phaser.GameObjects.Sprite {
     }
 
     // fires single shot, path is sine wave
-    static YellowMark = class extends Ship {
+    static YellowMark = class extends EnemyShip {
         constructor(scene, x, y, texture, frame) {
             super(scene, x, y, texture, frame);
             this.health = 9;
@@ -51,7 +51,7 @@ class EnemyShip extends Phaser.GameObjects.Sprite {
     }
 
     // unarmed ship, nonmoving target
-    static WhiteFlag = class extends Ship {
+    static WhiteFlag = class extends EnemyShip {
         constructor(scene, x, y, texture, frame) {
             super(scene, x, y, texture, frame);
             this.health = 3;
