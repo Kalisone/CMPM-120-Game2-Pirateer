@@ -47,20 +47,19 @@ class Sea extends Phaser.Scene {
     cannonFire(cannonShots, cannonSmoke, ship){
         if ((cannonShots == undefined) || (cannonSmoke == undefined) ||(ship == undefined)) { return; }
 
-        let offsetShot = -50, offsetSmoke = -30;
+        let offsetX = -30;
         if (ship === this.my.sprite.pirateShip) {
-            offsetShot *= -1;
-            offsetSmoke *= -1;
+            offsetX *= -1;
         }
         this.input.on('pointerdown', (pointer) => {
             if(pointer.leftButtonDown()) {
-                cannonShots.push(this.add.sprite(ship.x + offsetShot, ship.y, "pirateMisc", "cannonBall.png"));
+                cannonShots.push(this.add.sprite(ship.x + offsetX, ship.y, "pirateMisc", "cannonBall.png"));
 
-                cannonSmoke.push(this.add.sprite(ship.x + offsetSmoke, ship.y, "tanks", "smokeWhite5.png").setScale(0.3));
+                cannonSmoke.push(this.add.sprite(ship.x + offsetX+12, ship.y, "tanks", "smokeWhite5.png").setScale(0.3).setAlpha(0.8));
 
-                cannonSmoke.push(this.add.sprite(ship.x + offsetSmoke+10, ship.y, "tanks", "smokeWhite4.png").setScale(0.3));
+                cannonSmoke.push(this.add.sprite(ship.x + offsetX+6, ship.y, "tanks", "smokeWhite4.png").setScale(0.3).setAlpha(0.8));
                 
-                cannonSmoke.push(this.add.sprite(ship.x + offsetSmoke+20, ship.y, "tanks", "smokeWhite0.png").setScale(0.3));
+                cannonSmoke.push(this.add.sprite(ship.x + offsetX, ship.y, "tanks", "smokeWhite0.png").setScale(0.4).setAlpha(0.8));
 
                 for (let smoke of cannonSmoke) {
                     this.tweens.add({
