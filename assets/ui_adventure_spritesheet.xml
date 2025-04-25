@@ -1,4 +1,4 @@
-<TextureAtlas imagePath="spritesheet-default.png">
+<TextureAtlas imagePath="ui_adventure_spritesheet.png">
 	<SubTexture name="banner_classic_curtainimg.png" x="0" y="64" width="256" height="64"/>
 	<SubTexture name="banner_hangingimg.png" x="0" y="0" width="256" height="64"/>
 	<SubTexture name="banner_modernimg.png" x="0" y="128" width="256" height="48"/>

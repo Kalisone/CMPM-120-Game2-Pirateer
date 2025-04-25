@@ -1,4 +1,4 @@
-<TextureAtlas imagePath="shipsMiscellaneous_sheet.png">
+<TextureAtlas imagePath="piratePack_ships_spritesheet.png">
 	<SubTexture name="cannon.png" x="88" y="422" width="29" height="16"/>
 	<SubTexture name="cannonBall.png" x="120" y="29" width="10" height="10"/>
 	<SubTexture name="cannonLoose.png" x="439" y="496" width="20" height="12"/>

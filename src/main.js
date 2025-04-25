@@ -1,13 +1,17 @@
-// Jim Whitehead
-// Created: 4/14/2024
-// Phaser: 3.70.0
+// Ethan Morelos
+// CMPM 120 - Game Development Experience
+// Game 2 - Gallery Shooter
+// May 5, 2024
 //
-// Cubey
+// Pirateer
 //
 // An example of putting sprites on the screen using Phaser
 // 
-// Art assets from Kenny Assets "Shape Characters" set:
-// https://kenney.nl/assets/shape-characters
+// Art assets from Kenny Assets
+// "Pirate Pack" set: https://kenney.nl/assets/pirate-pack
+// "UI Pack - Adventure" set: https://kenney.nl/assets/ui-pack-adventure
+//
+// Audio assets
 
 // debug with extreme prejudice
 "use strict"
@@ -21,7 +25,7 @@ let config = {
     },
     width: 1000,
     height: 800,
-    scene: [Path]
+    scene: [Sea]
 }
 
 // Global variable to hold sprites
