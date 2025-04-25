@@ -25,6 +25,7 @@ class Sea extends Phaser.Scene {
 
     create(){
         let my = this.my;
+        let cannonballs = [], cannonSmoke = [];
         this.pointer = this.input.activePointer;
         
         this.keyUp = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
@@ -34,10 +35,27 @@ class Sea extends Phaser.Scene {
 
         my.sprite.pirateShip = this.add.sprite(this.originX, this.originY, "pirateMisc", "ship (2).png").setScale(0.6).setAngle(270);
 
+        // Fire cannonball
         this.input.on('pointerdown', (pointer) => {
             if(pointer.leftButtonDown()) {
-                this.add.sprite(my.sprite.pirateShip.x + 50, my.sprite.pirateShip.y, "pirateMisc", "cannonBall.png");
-                my.sprite.smoke = this.add.sprite(my.sprite.pirateShip.x + 30, my.sprite.pirateShip.y, "tanks", "smokeWhite5.png").setScale(0.3).setAlpha(0.8);
+                cannonballs.push(this.add.sprite(my.sprite.pirateShip.x + 50, my.sprite.pirateShip.y, "pirateMisc", "cannonBall.png"));
+
+                cannonSmoke.push(this.add.sprite(my.sprite.pirateShip.x + 30, my.sprite.pirateShip.y, "tanks", "smokeWhite5.png").setScale(0.3));
+                
+                cannonSmoke.push(this.add.sprite(my.sprite.pirateShip.x + 30, my.sprite.pirateShip.y, "tanks", "smokeWhite0.png").setScale(0.3));
+
+                for (let i=0; i<cannonSmoke.length; i++) {
+                    this.tweens.add({
+                        targets: cannonSmoke[i],
+                        alpha: 0,
+                        duration: 1000,
+                        delay: 0,
+                        ease: "Linear",
+                        onComplete: () => {
+                            smoke.destroy();
+                        }
+                    });
+                }
                 
                 this.sound.play("cannonFire", {volume: 0.5});
             }
