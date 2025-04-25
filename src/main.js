@@ -25,7 +25,11 @@ let config = {
     },
     width: 1000,
     height: 800,
-    scene: [Sea]
+    scene: [Sea],
+    fps: {
+        forceSetTimeOut: true,
+        target: 30
+    }
 }
 
 // Global variable to hold sprites

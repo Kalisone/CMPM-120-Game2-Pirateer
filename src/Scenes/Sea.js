@@ -11,4 +11,13 @@ class Sea extends Phaser.Scene {
         this.load.atlasXML("uiAdventure", "ui_adventure_spritesheet", "ui_adventure_spritesheet.xml");
         // this.load.image("pirateTiles", "piratePack_tilesheet"); // tiles
     }
+
+    create(){
+        let my = this.my;
+    }
+
+    update(){
+        let my = this.my;
+        // let pirateSpeed = ;
+    }
 }
