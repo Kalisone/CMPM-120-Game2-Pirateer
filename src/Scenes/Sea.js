@@ -32,7 +32,7 @@ class Sea extends Phaser.Scene {
         this.keyDown = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
         this.keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
 
-        my.sprite.pirateShip = this.add.sprite(this.originX, this.originY, "pirateMisc", "ship (2).png").setScale(0.5).setAngle(270);
+        my.sprite.pirateShip = this.add.sprite(this.originX, this.originY, "pirateMisc", "ship (2).png").setScale(0.6).setAngle(270);
 
         this.input.on('pointerdown', (pointer) => {
             if(pointer.leftButtonDown()) {
