@@ -16,7 +16,9 @@ class Sea extends Phaser.Scene {
         // this.load.image("pirateTiles", "piratePack_tilesheet"); // tiles
 
         this.load.audio("cannonFire", "cannonFire.mp3");
-        this.load.audio("woodSmash", "woodSmash.mp3");
+        this.load.audio("woodSmash_0", "woodSmash.mp3");
+        this.load.audio("woodSmash_1", "woodSmash_1.mp3");
+        this.load.audio("woodSmash_2", "woodSmash_2.mp3");
         this.load.audio("waterRush", "waterRush_0.mp3");
         this.load.audio("windAmbience", "windAmbience_0.mp3");
     }
