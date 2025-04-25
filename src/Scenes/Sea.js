@@ -59,11 +59,11 @@ class Sea extends Phaser.Scene {
             if(pointer.leftButtonDown()) {
                 cannonShots.push(this.add.sprite(ship.x + offsetX, ship.y, "pirateMisc", "cannonBall.png"));
 
-                cannonSmoke.push(this.add.sprite(ship.x + offsetX+12, ship.y, "tanks", "smokeWhite5.png").setScale(0.3).setAlpha(0.8));
+                cannonSmoke.push(this.add.sprite(ship.x + offsetX+12, ship.y, "tanks", "smokeWhite5.png").setScale(0.3).setAlpha(0.5));
 
-                cannonSmoke.push(this.add.sprite(ship.x + offsetX+6, ship.y, "tanks", "smokeWhite4.png").setScale(0.3).setAlpha(0.8));
+                cannonSmoke.push(this.add.sprite(ship.x + offsetX+6, ship.y, "tanks", "smokeWhite4.png").setScale(0.3).setAlpha(0.7));
                 
-                cannonSmoke.push(this.add.sprite(ship.x + offsetX, ship.y, "tanks", "smokeWhite0.png").setScale(0.4).setAlpha(0.8));
+                cannonSmoke.push(this.add.sprite(ship.x + offsetX, ship.y, "tanks", "smokeWhite0.png").setScale(0.4).setAlpha(0.9));
 
                 for (let smoke of cannonSmoke) {
                     this.tweens.add({
