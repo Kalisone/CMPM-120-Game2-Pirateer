@@ -12,6 +12,9 @@
 // "UI Pack - Adventure" set: https://kenney.nl/assets/ui-pack-adventure
 //
 // Audio assets
+//
+// Music
+// "Pirate Crew" by Ross Bugden: https://www.youtube.com/@RossBugden
 
 // debug with extreme prejudice
 "use strict"

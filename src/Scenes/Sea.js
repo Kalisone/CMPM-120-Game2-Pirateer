@@ -21,6 +21,7 @@ class Sea extends Phaser.Scene {
         this.load.audio("woodSmash_2", "woodSmash_2.mp3");
         this.load.audio("waterRush", "waterRush_0.mp3");
         this.load.audio("windAmbience", "windAmbience_0.mp3");
+        this.load.audio("PirateCrew", "PirateCrew_RossBugden.mp3");
     }
 
     create(){
@@ -39,9 +40,12 @@ class Sea extends Phaser.Scene {
         this.cannonFire(this.cannonShots, this.cannonSmoke, my.sprite.pirateShip);
 
         const waterRush = this.sound.add("waterRush");
-        waterRush.play({loop: true, volume: 0.2});
         const windAmbience = this.sound.add("windAmbience");
+        const music = this.sound.add("PirateCrew");
+
+        waterRush.play({loop: true, volume: 0.2});
         windAmbience.play({loop: true, volume: 0.2});
+        music.play({loop: true, volume: 0.2});
     }
 
     cannonFire(cannonShots, cannonSmoke, ship){
