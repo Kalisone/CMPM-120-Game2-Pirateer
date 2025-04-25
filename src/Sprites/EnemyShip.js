@@ -1,6 +1,6 @@
-class Ship extends Phaser.GameObjects.Sprite {
-    constructor(scene, x, y) {
-        super(scene, x, y);
+class EnemyShip extends Phaser.GameObjects.Sprite {
+    constructor(scene, x, y, texture, frame) {
+        super(scene, x, y, texture, frame);
         this.scene = scene;
         this.setScale(0.6);
         this.setAngle(90);
@@ -13,8 +13,8 @@ class Ship extends Phaser.GameObjects.Sprite {
 
     // fires 3 shots, curved path
     static RedCross = class extends Ship {
-        constructor(scene, x, y) {
-            super(scene, x, y);
+        constructor(scene, x, y, texture, frame) {
+            super(scene, x, y, texture, frame);
             this.health = 15;
             this.points = 3;
             this.speed = 2;
@@ -23,8 +23,8 @@ class Ship extends Phaser.GameObjects.Sprite {
 
     // fires heavy shot, straight path
     static GreenSwords = class extends Ship {
-        constructor(scene, x, y) {
-            super(scene, x, y);
+        constructor(scene, x, y, texture, frame) {
+            super(scene, x, y, texture, frame);
             this.health = 3;
             this.points = 1;
             this.speed = 2;
@@ -33,8 +33,8 @@ class Ship extends Phaser.GameObjects.Sprite {
 
     // fires sideways, faster, straight path
     static BlueCavalier = class extends Ship {
-        constructor(scene, x, y) {
-            super(scene, x, y);
+        constructor(scene, x, y, texture, frame) {
+            super(scene, x, y, texture, frame);
             this.health = 3;
             this.points = 1;
             this.speed = 4;
@@ -43,8 +43,8 @@ class Ship extends Phaser.GameObjects.Sprite {
 
     // fires single shot, path is sine wave
     static YellowMark = class extends Ship {
-        constructor(scene, x, y) {
-            super(scene, x, y);
+        constructor(scene, x, y, texture, frame) {
+            super(scene, x, y, texture, frame);
             this.health = 9;
             this.points = 2;
             this.speed = 2;
@@ -53,33 +53,11 @@ class Ship extends Phaser.GameObjects.Sprite {
 
     // unarmed ship, nonmoving target
     static WhiteFlag = class extends Ship {
-        constructor(scene, x, y) {
-            super(scene, x, y);
+        constructor(scene, x, y, texture, frame) {
+            super(scene, x, y, texture, frame);
             this.health = 3;
             this.points = 1;
             this.speed = 1;
-        }
-    }
-
-    // pirate ship
-    static PirateShip = class extends Ship {
-        constructor(scene, x, y) {
-            super(scene, x, y);
-            this.health = 15;
-            this.points = null;
-            this.speed = 5;
-        }
-
-        update() {
-            if (this.y < 100 && this.y > game.config.height) {
-                if((this.keyUp.isDown || this.keyW.isDown && !(this.keyDown.isDown || this.keyS.isDown))) {
-                    this.y -= speed;
-                }
-        
-                if(this.keyDown.isDown || this.keyS.isDown && !(this.keyUp.isDown || this.keyW.isDown)) {
-                    this.y += speed;
-                }
-            }
         }
     }
 }
