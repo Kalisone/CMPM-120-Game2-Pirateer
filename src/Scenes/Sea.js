@@ -30,9 +30,7 @@ class Sea extends Phaser.Scene {
         this.cannonSmoke = [];
         this.pointer = this.input.activePointer;
         
-        this.keyUp = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
         this.keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
-        this.keyDown = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
         this.keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
 
         my.sprite.pirateShip = this.add.sprite(this.originX, this.originY, "pirateMisc", "ship (2).png").setScale(0.6).setAngle(270);
@@ -86,11 +84,11 @@ class Sea extends Phaser.Scene {
         let my = this.my;
         let pirateSpeed = 6, cannonShotSpeed = 12;
 
-        if((this.keyUp.isDown || this.keyW.isDown && !(this.keyDown.isDown || this.keyS.isDown))) {
+        if(this.keyW.isDown) {
             my.sprite.pirateShip.y -= pirateSpeed;
         }
 
-        if(this.keyDown.isDown || this.keyS.isDown && !(this.keyUp.isDown || this.keyW.isDown)) {
+        if(this.keyS.isDown) {
             my.sprite.pirateShip.y += pirateSpeed;
         }
         

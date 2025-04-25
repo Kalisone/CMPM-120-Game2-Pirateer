@@ -1,9 +1,9 @@
 class PlayerShip extends Phaser.GameObjects.Sprite {
-    constructor(scene, x, y, texture, frame, keyUp, keyW, keyDown, keyS) {
+    constructor(scene, x, y, texture, frame, keyW, keyS) {
         super(scene, x, y, texture, frame);
         
-        this.up = keyUp = keyW;
-        this.down = keyDown = keyS;
+        this.up = keyW;
+        this.down = keyS;
         this.health = 15;
         this.speed = 5;
         this.setScale(0.6);
