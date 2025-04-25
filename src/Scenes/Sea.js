@@ -11,12 +11,12 @@ class Sea extends Phaser.Scene {
         this.load.setPath("./assets/");
 
         this.load.atlasXML("pirateMisc", "piratePack_ships_spritesheet.png", "piratePack_ships_spritesheet.xml");
-        this.load.atlasXML("uiAdventure", "ui_adventure_spritesheet", "ui_adventure_spritesheet.xml");
+        this.load.atlasXML("uiAdventure", "ui_adventure_spritesheet.png", "ui_adventure_spritesheet.xml");
         this.load.atlasXML("tanks", "tanks_spritesheet.png", "tanks_spritesheet.xml");
         // this.load.image("pirateTiles", "piratePack_tilesheet"); // tiles
 
         this.load.audio("cannonFire", "cannonFire.mp3");
-        this.load.audio("woodSmash_0", "woodSmash.mp3");
+        this.load.audio("woodSmash_0", "woodSmash_0.mp3");
         this.load.audio("woodSmash_1", "woodSmash_1.mp3");
         this.load.audio("woodSmash_2", "woodSmash_2.mp3");
         this.load.audio("waterRush", "waterRush_0.mp3");

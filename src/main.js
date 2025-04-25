@@ -7,6 +7,7 @@
 //
 // An example of putting sprites on the screen using Phaser
 // 
+// Favicon: jolly roger by Andrew Cameron from "https://thenounproject.com/browse/icons/term/jolly-roger/", Noun Project (CC BY 3.0)
 // Art assets from Kenny Assets
 // "Pirate Pack" set: https://kenney.nl/assets/pirate-pack
 // "UI Pack - Adventure" set: https://kenney.nl/assets/ui-pack-adventure
