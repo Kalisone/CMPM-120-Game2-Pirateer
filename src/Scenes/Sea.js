@@ -102,11 +102,11 @@ class Sea extends Phaser.Scene {
         }
 
         //my.sprite.cannonShots = my.sprite.cannonShots.filter((shot) => shot.x > game.config.width);
-
+/*
         let count = 0;
         for (let shot of my.sprite.cannonShots){
             count++;
         }
-        console.log("Shots: " + count);
+        console.log("Shots: " + count);*/
     }
 }
