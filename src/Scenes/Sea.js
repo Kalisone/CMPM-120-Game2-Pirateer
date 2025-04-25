@@ -35,14 +35,31 @@ class Sea extends Phaser.Scene {
 
         my.sprite.pirateShip = this.add.sprite(this.originX, this.originY, "pirateMisc", "ship (2).png").setScale(0.6).setAngle(270);
 
-        // Fire cannonball
+        this.cannonFire(cannonballs, cannonSmoke, my.sprite.pirateShip);
+
+        const waterRush = this.sound.add("waterRush");
+        waterRush.play({loop: true, volume: 0.2});
+        const windAmbience = this.sound.add("windAmbience");
+        windAmbience.play({loop: true, volume: 0.2});
+    }
+
+    cannonFire(cannonballs, cannonSmoke, ship){
+        if ((cannonballs == undefined) || (cannonSmoke == undefined) ||(ship == undefined)) { return; }
+
+        let offsetShot = -50, offsetSmoke = -30;
+        if (ship === this.my.sprite.pirateShip) {
+            offsetShot *= -1;
+            offsetSmoke *= -1;
+        }
         this.input.on('pointerdown', (pointer) => {
             if(pointer.leftButtonDown()) {
-                cannonballs.push(this.add.sprite(my.sprite.pirateShip.x + 50, my.sprite.pirateShip.y, "pirateMisc", "cannonBall.png"));
+                cannonballs.push(this.add.sprite(ship.x + offsetShot, ship.y, "pirateMisc", "cannonBall.png"));
 
-                cannonSmoke.push(this.add.sprite(my.sprite.pirateShip.x + 30, my.sprite.pirateShip.y, "tanks", "smokeWhite5.png").setScale(0.3));
+                cannonSmoke.push(this.add.sprite(ship.x + offsetSmoke, ship.y, "tanks", "smokeWhite4.png").setScale(0.3));
+
+                cannonSmoke.push(this.add.sprite(ship.x + offsetSmoke, ship.y, "tanks", "smokeWhite5.png").setScale(0.3));
                 
-                cannonSmoke.push(this.add.sprite(my.sprite.pirateShip.x + 30, my.sprite.pirateShip.y, "tanks", "smokeWhite0.png").setScale(0.3));
+                cannonSmoke.push(this.add.sprite(ship.x + offsetSmoke, ship.y, "tanks", "smokeWhite0.png").setScale(0.3));
 
                 for (let i=0; i<cannonSmoke.length; i++) {
                     this.tweens.add({
@@ -52,7 +69,7 @@ class Sea extends Phaser.Scene {
                         delay: 0,
                         ease: "Linear",
                         onComplete: () => {
-                            smoke.destroy();
+                            cannonSmoke[i].destroy();
                         }
                     });
                 }
@@ -60,11 +77,6 @@ class Sea extends Phaser.Scene {
                 this.sound.play("cannonFire", {volume: 0.5});
             }
         });
-
-        const waterRush = this.sound.add("waterRush");
-        waterRush.play({loop: true, volume: 0.2});
-        const windAmbience = this.sound.add("windAmbience");
-        windAmbience.play({loop: true, volume: 0.2});
     }
 
     update(){
