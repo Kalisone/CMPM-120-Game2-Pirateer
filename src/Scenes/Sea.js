@@ -27,6 +27,16 @@ class Sea extends Phaser.Scene {
     }
 
     create(){
+        // Ambient audio + music
+        const waterRush = this.sound.add("waterRush");
+        const windAmbience = this.sound.add("windAmbience");
+        const music = this.sound.add("PirateCrew");
+
+        waterRush.play({loop: true, volume: 0.2});
+        windAmbience.play({loop: true, volume: 0.2});
+        music.play({loop: true, volume: 0.2});
+
+        // Sea scene sprite variables
         let my = this.my;
 
         // Pirate Ship cannon variables
@@ -42,19 +52,13 @@ class Sea extends Phaser.Scene {
 
         my.sprite.pirateShip = this.add.sprite(this.originX, this.originY, "pirateMisc", "ship (2).png").setScale(0.6).setAngle(270);
 
-        const waterRush = this.sound.add("waterRush");
-        const windAmbience = this.sound.add("windAmbience");
-        const music = this.sound.add("PirateCrew");
-
-        waterRush.play({loop: true, volume: 0.2});
-        windAmbience.play({loop: true, volume: 0.2});
-        music.play({loop: true, volume: 0.2});
-
+        // Pirate Ship Cannon Shots
         for(let i = 0; i < this.maxShots; i++){
             my.sprite.cannonShots.push(this.add.sprite(-100, -100, "pirateMisc", "cannonBall.png"));
             my.sprite.cannonShots[i].visible = false;
         }
         
+        // Pirate Ship Cannon Smoke
         my.sprite.cannonSmoke.push(this.add.sprite(-100, -100, "tanks", "smokeWhite0.png").setScale(0.4).setAlpha(0.9));
         my.sprite.cannonSmoke[0].visible = false;
 
@@ -64,6 +68,7 @@ class Sea extends Phaser.Scene {
         my.sprite.cannonSmoke.push(this.add.sprite(-100, -100, "tanks", "smokeWhite5.png").setScale(0.3).setAlpha(0.5));
         my.sprite.cannonSmoke[2].visible = false;
 
+        // New enemy for testing
         my.sprite.enemyShip = new RedCross(this, 200, 200);
     }
 
