@@ -3,7 +3,7 @@ class Sea extends Phaser.Scene {
         super("sea"); // super({ key: 'Sea' });
         this.my = {sprite: {}};
         this.my.enemies = [], this.my.sprite.cannonShots = [], this.my.sprite.cannonSmoke = [];
-        this.maxShots = 6, this.cannonReload = 36, this.cannonReloadCounter = 0;
+        this.maxEnemies = 12, this.maxShots = 6, this.cannonReload = 36, this.cannonReloadCounter = 0;
 
         this.originX = 100;
         this.originY = game.config.height / 2;
@@ -44,7 +44,7 @@ class Sea extends Phaser.Scene {
 
         waterRush.play({loop: true, volume: 0.2});
         windAmbience.play({loop: true, volume: 0.2});
-        //music.play({loop: true, volume: 0.2});
+        music.play({loop: true, volume: 0.2});
 
         for(let i = 0; i < this.maxShots; i++){
             my.sprite.cannonShots.push(this.add.sprite(-100, -100, "pirateMisc", "cannonBall.png"));
@@ -59,6 +59,8 @@ class Sea extends Phaser.Scene {
 
         my.sprite.cannonSmoke.push(this.add.sprite(-100, -100, "tanks", "smokeWhite5.png").setScale(0.3).setAlpha(0.5));
         my.sprite.cannonSmoke[2].visible = false;
+
+        my.sprite.enemyShip = new EnemyShip(this, 200,200, "WhiteCross", "ship (1).png");
     }
 
     update(){
@@ -93,12 +95,12 @@ class Sea extends Phaser.Scene {
                     smoke.y = my.sprite.pirateShip.y;
                     smoke.visible = true;
 
-                    this.offsetX += this.offsetX;
+                    this.offsetX += smoke.displayWidth / 3;
 
                     this.tweens.add({
                         targets: smoke,
                         alpha: 0,
-                        duration: 1000,
+                        duration: 600,
                         ease: "Linear",
                         delay: this.offsetX * 5,
                         onComplete: () => {
