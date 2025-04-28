@@ -2,7 +2,7 @@ class Sea extends Phaser.Scene {
     constructor() {
         super("sea"); // super({ key: 'Sea' });
         this.my = {sprite: {}};
-        this.my.enemies = [], this.my.sprite.cannonShots = [], this.my.sprite.cannonSmoke = [];
+        this.my.enemies = [];
         this.maxEnemies = 12, this.maxShots = 6, this.cannonReload = 36, this.cannonReloadCounter = 0;
 
         this.originX = 100;
@@ -28,12 +28,16 @@ class Sea extends Phaser.Scene {
 
     create(){
         let my = this.my;
+
+        // Pirate Ship cannon variables
         my.sprite.cannonShots = [], my.sprite.cannonSmoke = [];
         
+        // Pirate Ship controls
         this.keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         this.keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
+        // Add Pirate Ship
         this.pirateSpeed = 6, this.cannonShotSpeed = 12;
 
         my.sprite.pirateShip = this.add.sprite(this.originX, this.originY, "pirateMisc", "ship (2).png").setScale(0.6).setAngle(270);

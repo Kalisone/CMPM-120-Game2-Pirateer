@@ -2,19 +2,28 @@ class WhiteMark extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y, texture, frame) {
         if(!texture) texture = "pirateMisc";
         if(!frame) frame = "ship (1).png";
-        
+
         super(scene, x, y, texture, frame);
+        this.my = {sprite: {}};
+
         this.setScale(0.6);
         this.setAngle(90);
-        this.health = 6, this.points = 1, this.speed, 1;
+
+        this.my.sprite.cannonShots = [], this.my.sprite.cannonSmoke = [];
+        this.maxShots = 6, this.reload = 36, this.reloadCounter = 0;
+
+        this.health = 6, this.points = 1, this.speed = 1;
+
         this.scene = scene;
         scene.add.existing(this);
+    }
+
+    create() {
     }
 
     update() {
     }
 
-    
 /*
     // fires 3 shots, curved path
     static RedCross = class extends EnemyShip {
