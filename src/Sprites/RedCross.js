@@ -4,13 +4,10 @@ class RedCross extends WhiteMark{
         if(!frame) frame = "ship (3).png";
 
         super(scene, x, y, texture, frame);
+        this.my = {sprite: {}};
 
         this.my.x = x, this.my.y = y;
         this.health = 15, this.points = 3, this.speed = 2, this.shotSpeed = 12;
-
-        this.scene = scene;
-        
-        scene.add.existing(this);
 
         // Create
         let my = this.my;
@@ -33,9 +30,14 @@ class RedCross extends WhiteMark{
 
         my.sprite.cannonSmoke.push(this.add.sprite(-100, -100, "tanks", "smokeWhite5.png").setScale(0.3).setAlpha(0.5));
         my.sprite.cannonSmoke[2].visible = false;
+        
+
+        this.scene = scene;
+        scene.add.existing(this);
+        return this;
     }
 
-    cannonCheck(){
+    update(){
         let my = this.my;
         // Fire Cannon
         if(this.reloadCounter-- <= 0) {

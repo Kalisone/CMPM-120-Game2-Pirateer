@@ -73,7 +73,6 @@ class Sea extends Phaser.Scene {
 
     update(){
         let my = this.my;
-        my.sprite.enemyShip.cannonCheck();
 
         if(this.keyW.isDown) { // move up
             my.sprite.pirateShip.y -= this.pirateSpeed;
