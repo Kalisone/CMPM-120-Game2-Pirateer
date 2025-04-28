@@ -2,7 +2,7 @@ class Sea extends Phaser.Scene {
     constructor() {
         super("sea"); // super({ key: 'Sea' });
         this.my = {sprite: {}};
-        this.my.sprite.cannonShots = [], this.my.sprite.cannonSmoke = [];
+        this.my.enemies = [], this.my.sprite.cannonShots = [], this.my.sprite.cannonSmoke = [];
         this.maxShots = 6, this.cannonReload = 36, this.cannonReloadCounter = 0;
 
         this.originX = 100;
@@ -37,10 +37,6 @@ class Sea extends Phaser.Scene {
         this.pirateSpeed = 6, this.cannonShotSpeed = 12;
 
         my.sprite.pirateShip = this.add.sprite(this.originX, this.originY, "pirateMisc", "ship (2).png").setScale(0.6).setAngle(270);
-        //let pirateTexture = this.textures.get("pirateMisc").get("ship (2).png");
-        //my.sprite.pirateShip = new PlayerShip(this, this.originX, this.originY, pirateTexture, null, this.keyW, this.keyS);
-
-        //this.cannonFire(my.sprite.cannonShots, my.sprite.cannonSmoke, my.sprite.pirateShip);
 
         const waterRush = this.sound.add("waterRush");
         const windAmbience = this.sound.add("windAmbience");

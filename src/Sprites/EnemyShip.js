@@ -10,6 +10,7 @@ class EnemyShip extends Phaser.GameObjects.Sprite {
     update() {
     }
 
+    /*
     // fires 3 shots, curved path
     static RedCross = class extends EnemyShip {
         constructor(scene, x, y, texture, frame) {
@@ -58,5 +59,5 @@ class EnemyShip extends Phaser.GameObjects.Sprite {
             this.points = 1;
             this.speed = 1;
         }
-    }
+    }*/
 }
