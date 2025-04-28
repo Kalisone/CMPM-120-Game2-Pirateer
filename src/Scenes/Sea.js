@@ -2,8 +2,8 @@ class Sea extends Phaser.Scene {
     constructor() {
         super("sea"); // super({ key: 'Sea' });
         this.my = {sprite: {}};
-        this.my.enemies = [];
-        this.maxEnemies = 12, this.maxShots = 6, this.cannonReload = 36, this.cannonReloadCounter = 0;
+        my.enemies = [];
+        this.maxEnemies = 12;
 
         this.originX = 100;
         this.originY = game.config.height / 2;
@@ -36,10 +36,11 @@ class Sea extends Phaser.Scene {
         windAmbience.play({loop: true, volume: 0.2});
         music.play({loop: true, volume: 0.2});
 
-        // Sea scene sprite variables
-        let my = this.my;
+        // Sea scene variables
+        this.pirateSpeed = 6, this.shotSpeed = 12;
 
-        // Pirate Ship cannon variables
+        let my = this.my;
+        this.maxShots = 6, this.reload = 36, this.reloadCounter = 0;
         my.sprite.cannonShots = [], my.sprite.cannonSmoke = [];
         
         // Pirate Ship controls
@@ -48,8 +49,6 @@ class Sea extends Phaser.Scene {
         this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         // Add Pirate Ship
-        this.pirateSpeed = 6, this.cannonShotSpeed = 12;
-
         my.sprite.pirateShip = this.add.sprite(this.originX, this.originY, "pirateMisc", "ship (2).png").setScale(0.6).setAngle(270);
 
         // Pirate Ship Cannon Shots
@@ -74,6 +73,7 @@ class Sea extends Phaser.Scene {
 
     update(){
         let my = this.my;
+        my.sprite.enemyShip.update();
 
         if(this.keyW.isDown) { // move up
             my.sprite.pirateShip.y -= this.pirateSpeed;
@@ -84,7 +84,7 @@ class Sea extends Phaser.Scene {
         }
 
         // Fire Cannon
-        if(this.cannonReloadCounter-- <= 0 && this.keySpace.isDown) {
+        if(this.reloadCounter-- <= 0 && this.keySpace.isDown) {
             this.offsetX = 8;
 
             for(let shot of my.sprite.cannonShots){
@@ -93,7 +93,7 @@ class Sea extends Phaser.Scene {
                     shot.y = my.sprite.pirateShip.y;
                     shot.visible = true;
 
-                    this.cannonReloadCounter = this.cannonReload;
+                    this.reloadCounter = this.reload;
                     break;
                 }
             }
@@ -125,7 +125,7 @@ class Sea extends Phaser.Scene {
         // Move Shots
         for(let shot of my.sprite.cannonShots) {
             if(shot.visible){
-                shot.x += this.cannonShotSpeed;
+                shot.x += this.shotSpeed;
             }
 
             if(shot.x > game.config.width) {

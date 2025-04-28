@@ -8,10 +8,11 @@ class WhiteMark extends Phaser.GameObjects.Sprite {
 
         this.setScale(0.6);
         this.setAngle(90);
-
+/*
         this.my.sprite.cannonShots = [], this.my.sprite.cannonSmoke = [];
         this.maxShots = 6, this.reload = 36, this.reloadCounter = 0;
-
+*/
+        this.x = x, this.y = y;
         this.health = 6, this.points = 1, this.speed = 1;
 
         this.scene = scene;
