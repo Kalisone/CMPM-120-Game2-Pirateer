@@ -131,5 +131,7 @@ class Sea extends Phaser.Scene {
                 shot.visible = false;
             }
         }
+
+        my.sprite.enemyShip.update();
     }
 }

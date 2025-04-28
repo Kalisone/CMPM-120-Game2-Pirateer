@@ -1,38 +1,37 @@
-class RedCross extends WhiteMark{
+class RedCross extends EnemyShip{
     constructor(scene, x, y, texture, frame) {
         if(!texture) texture = "pirateMisc";
         if(!frame) frame = "ship (3).png";
 
         super(scene, x, y, texture, frame);
         this.my = {sprite: {}};
+        let my = this.my;
+        this.scene = scene;
 
-        this.my.x = x, this.my.y = y;
+        my.x = x, my.y = y;
         this.health = 15, this.points = 3, this.speed = 2, this.shotSpeed = 12;
 
         // Create
-        let my = this.my;
         this.maxShots = 12, this.reload = 36, this.reloadCounter = 0;
 
         my.sprite.cannonShots = [], my.sprite.cannonSmoke = [];
 
         // Cannon shots
         for(let i = 0; i < this.maxShots; i++){
-            my.sprite.cannonShots.push(this.add.sprite(-100, -100, "pirateMisc", "cannonBall.png"));
+            my.sprite.cannonShots.push(scene.add.sprite(-100, -100, "pirateMisc", "cannonBall.png"));
             my.sprite.cannonShots[i].visible = false;
         }
         
         // Cannon smoke
-        my.sprite.cannonSmoke.push(this.add.sprite(-100, -100, "tanks", "smokeWhite0.png").setScale(0.4).setAlpha(0.9));
+        my.sprite.cannonSmoke.push(scene.add.sprite(-100, -100, "tanks", "smokeWhite0.png").setScale(0.4).setAlpha(0.9));
         my.sprite.cannonSmoke[0].visible = false;
 
-        my.sprite.cannonSmoke.push(this.add.sprite(-100, -100, "tanks", "smokeWhite4.png").setScale(0.3).setAlpha(0.7));
+        my.sprite.cannonSmoke.push(scene.add.sprite(-100, -100, "tanks", "smokeWhite4.png").setScale(0.3).setAlpha(0.7));
         my.sprite.cannonSmoke[1].visible = false;
 
-        my.sprite.cannonSmoke.push(this.add.sprite(-100, -100, "tanks", "smokeWhite5.png").setScale(0.3).setAlpha(0.5));
+        my.sprite.cannonSmoke.push(scene.add.sprite(-100, -100, "tanks", "smokeWhite5.png").setScale(0.3).setAlpha(0.5));
         my.sprite.cannonSmoke[2].visible = false;
         
-
-        this.scene = scene;
         scene.add.existing(this);
         return this;
     }
