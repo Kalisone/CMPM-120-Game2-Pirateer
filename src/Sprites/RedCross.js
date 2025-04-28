@@ -5,13 +5,14 @@ class RedCross extends WhiteMark{
 
         super(scene, x, y, texture, frame);
 
+        this.my.x = x, this.my.y = y;
         this.health = 15, this.points = 3, this.speed = 2, this.shotSpeed = 12;
-        this.scene = scene;
-        this.create();
-        scene.add.existing(this);
-    }
 
-    create(){
+        this.scene = scene;
+        
+        scene.add.existing(this);
+
+        // Create
         let my = this.my;
         this.maxShots = 12, this.reload = 36, this.reloadCounter = 0;
 
@@ -34,7 +35,7 @@ class RedCross extends WhiteMark{
         my.sprite.cannonSmoke[2].visible = false;
     }
 
-    update(){
+    cannonCheck(){
         let my = this.my;
         // Fire Cannon
         if(this.reloadCounter-- <= 0) {
@@ -42,19 +43,19 @@ class RedCross extends WhiteMark{
 
             for(let shot of my.sprite.cannonShots){
                 if(!shot.visible){
-                    shot.x = this.x - (shot.displayWidth / 2) - this.offsetX;
-                    shot.y = this.y;
+                    shot.x = my.x - (shot.displayWidth / 2) - my.offsetX;
+                    shot.y = my.y;
                     shot.visible = true;
 
                     this.reloadCounter = this.reload;
                     break;
                 }
             }
-
+/*
             for(let smoke of my.sprite.cannonSmoke) {
                 if(!smoke.visible){
-                    smoke.x = this.x - (smoke.displayWidth / 2) - this.offsetX;
-                    smoke.y = this.y;
+                    smoke.x = my.x - (smoke.displayWidth / 2) - this.offsetX;
+                    smoke.y = my.y;
                     smoke.visible = true;
 
                     this.offsetX -= smoke.displayWidth / 3;
@@ -71,8 +72,8 @@ class RedCross extends WhiteMark{
                         }
                     });
                 }
-            }
-            this.sound.play("cannonFire", {volume: 0.6, pitch: 1.2});
+            }*/
+            this.sound.play("cannonFire", {volume: 0.6});
         }
         
         // Move Shots
