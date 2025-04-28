@@ -60,7 +60,7 @@ class Sea extends Phaser.Scene {
         my.sprite.cannonSmoke.push(this.add.sprite(-100, -100, "tanks", "smokeWhite5.png").setScale(0.3).setAlpha(0.5));
         my.sprite.cannonSmoke[2].visible = false;
 
-        my.sprite.enemyShip = new EnemyShip(this, 200,200, "WhiteCross", "ship (1).png");
+        my.sprite.enemyShip = new EnemyShip(this, 200,200);
     }
 
     update(){

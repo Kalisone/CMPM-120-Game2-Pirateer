@@ -1,26 +1,26 @@
 class EnemyShip extends Phaser.GameObjects.Sprite {
-    constructor(scene, x, y, texture, frame) {
-        super(scene, x, y, texture, frame);
+    constructor(scene, x, y) {
+        super(scene, x, y, "pirateMisc", "ship (1).png");
         this.scene = scene;
         this.setScale(0.6);
         this.setAngle(90);
         this.health, this.points, this.speed;
+        scene.add.existing(this);
     }
 
     update() {
     }
 
-    /*
     // fires 3 shots, curved path
     static RedCross = class extends EnemyShip {
-        constructor(scene, x, y, texture, frame) {
-            super(scene, x, y, texture, frame);
+        constructor(scene, x, y) {
+            super(scene, x, y, "pirateMisc", "ship (3).png");
             this.health = 15;
             this.points = 3;
             this.speed = 2;
         }
     }
-
+/*
     // fires heavy shot, straight path
     static GreenSwords = class extends EnemyShip {
         constructor(scene, x, y, texture, frame) {
