@@ -2,6 +2,9 @@ class Sea extends Phaser.Scene {
     constructor() {
         super("sea"); // super({ key: 'Sea' });
         this.my = {sprite: {}};
+        this.my.sprite.cannonShots = [], this.my.sprite.cannonSmoke = [];
+        this.maxShots = 6, this.cannonReload = 36, this.cannonReloadCounter = 0;
+        this.offsetX = 6;
 
         this.originX = 100;
         this.originY = game.config.height / 2;
@@ -26,18 +29,19 @@ class Sea extends Phaser.Scene {
 
     create(){
         let my = this.my;
-        my.sprite.cannonShots = [];
-        my.sprite.cannonSmoke = [];
-        this.pointer = this.input.activePointer;
+        my.sprite.cannonShots = [], my.sprite.cannonSmoke = [];
         
         this.keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         this.keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+        this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+
+        this.pirateSpeed = 6, this.cannonShotSpeed = 12;
 
         my.sprite.pirateShip = this.add.sprite(this.originX, this.originY, "pirateMisc", "ship (2).png").setScale(0.6).setAngle(270);
         //let pirateTexture = this.textures.get("pirateMisc").get("ship (2).png");
         //my.sprite.pirateShip = new PlayerShip(this, this.originX, this.originY, pirateTexture, null, this.keyW, this.keyS);
 
-        this.cannonFire(my.sprite.cannonShots, my.sprite.cannonSmoke, my.sprite.pirateShip);
+        //this.cannonFire(my.sprite.cannonShots, my.sprite.cannonSmoke, my.sprite.pirateShip);
 
         const waterRush = this.sound.add("waterRush");
         const windAmbience = this.sound.add("windAmbience");
@@ -45,59 +49,106 @@ class Sea extends Phaser.Scene {
 
         waterRush.play({loop: true, volume: 0.2});
         windAmbience.play({loop: true, volume: 0.2});
-        music.play({loop: true, volume: 0.2});
+        //music.play({loop: true, volume: 0.2});
+
+        for(let i = 0; i < this.maxShots; i++){
+            my.sprite.cannonShots.push(this.add.sprite(-100, -100, "pirateMisc", "cannonBall.png"));
+            my.sprite.cannonShots[i].visible = false;
+        }
+        
+        my.sprite.cannonSmoke.push(this.add.sprite(-100, -100, "tanks", "smokeWhite0.png").setScale(0.4).setAlpha(0.9));
+        my.sprite.cannonSmoke[0].visible = false;
+
+        my.sprite.cannonSmoke.push(this.add.sprite(-100, -100, "tanks", "smokeWhite4.png").setScale(0.3).setAlpha(0.7));
+        my.sprite.cannonSmoke[1].visible = false;
+
+        my.sprite.cannonSmoke.push(this.add.sprite(-100, -100, "tanks", "smokeWhite5.png").setScale(0.3).setAlpha(0.5));
+        my.sprite.cannonSmoke[2].visible = false;
+
+        /*
+        // Cannon Fire
+        //let offsetX = 30;
+        this.input.keyboard.on('keydown-SPACE', () => {
+            my.sprite.cannonShots.push(this.add.sprite(my.sprite.pirateShip.x + offsetX, my.sprite.pirateShip.y, "pirateMisc", "cannonBall.png"));
+            my.sprite.cannonSmoke.push(this.add.sprite(my.sprite.pirateShip.x + offsetX+12, my.sprite.pirateShip.y, "tanks", "smokeWhite5.png").setScale(0.3).setAlpha(0.5));
+
+            my.sprite.cannonSmoke.push(this.add.sprite(my.sprite.pirateShip.x + offsetX+6, my.sprite.pirateShip.y, "tanks", "smokeWhite4.png").setScale(0.3).setAlpha(0.7));
+            
+            my.sprite.cannonSmoke.push(this.add.sprite(my.sprite.pirateShip.x + offsetX, my.sprite.pirateShip.y, "tanks", "smokeWhite0.png").setScale(0.4).setAlpha(0.9));
+
+            for (let smoke of my.sprite.cannonSmoke) {
+                this.tweens.add({
+                    targets: smoke,
+                    alpha: 0,
+                    duration: 1000,
+                    ease: "Linear",
+                    onComplete: () => {
+                        smoke.destroy();
+                    }
+                });
+            }
+            
+            this.sound.play("cannonFire", {volume: 0.6});
+        });*/
     }
 
-    cannonFire(cannonShots, cannonSmoke, ship){
-        if ((cannonShots == undefined) || (cannonSmoke == undefined) ||(ship == undefined)) { return; }
+    update(){
+        let my = this.my;
 
-        let offsetX = -30;
-        if (ship === this.my.sprite.pirateShip) {
-            offsetX *= -1;
+        if(this.keyW.isDown) { // move up
+            my.sprite.pirateShip.y -= this.pirateSpeed;
         }
-        this.input.on('pointerdown', (pointer) => {
-            if(pointer.leftButtonDown()) {
-                cannonShots.push(this.add.sprite(ship.x + offsetX, ship.y, "pirateMisc", "cannonBall.png"));
 
-                cannonSmoke.push(this.add.sprite(ship.x + offsetX+12, ship.y, "tanks", "smokeWhite5.png").setScale(0.3).setAlpha(0.5));
+        if(this.keyS.isDown) { // move down
+            my.sprite.pirateShip.y += this.pirateSpeed;
+        }
 
-                cannonSmoke.push(this.add.sprite(ship.x + offsetX+6, ship.y, "tanks", "smokeWhite4.png").setScale(0.3).setAlpha(0.7));
-                
-                cannonSmoke.push(this.add.sprite(ship.x + offsetX, ship.y, "tanks", "smokeWhite0.png").setScale(0.4).setAlpha(0.9));
+        // Fire Cannon
+        if(this.cannonReloadCounter-- <= 0 && this.keySpace.isDown) {
+            for(let shot of my.sprite.cannonShots){
+                if(!shot.visible){
+                    shot.x = my.sprite.pirateShip.x + (shot.displayWidth / 2)+ this.offsetX;
+                    shot.y = my.sprite.pirateShip.y;
+                    shot.visible = true;
 
-                for (let smoke of cannonSmoke) {
+                    this.cannonReloadCounter = this.cannonReload;
+                    break;
+                }
+            }
+
+            for(let smoke of my.sprite.cannonSmoke) {
+                if(!smoke.visible){
+                    smoke.x = my.sprite.pirateShip.x + (smoke.displayWidth / 2) + this.offsetX;
+                    smoke.y = my.sprite.pirateShip.y;
+                    smoke.visible = true;
+
+                    this.offsetX += this.offsetX;
+
                     this.tweens.add({
                         targets: smoke,
                         alpha: 0,
                         duration: 1000,
                         ease: "Linear",
                         onComplete: () => {
-                            smoke.destroy();
+                            smoke.visible = false;
+                            smoke.alpha = 0.9;
                         }
                     });
                 }
-                
-                this.sound.play("cannonFire", {volume: 0.5});
             }
-        });
-    }
 
-    update(){
-        let my = this.my;
-        let pirateSpeed = 6, cannonShotSpeed = 12;
-
-        if(this.keyW.isDown) {
-            my.sprite.pirateShip.y -= pirateSpeed;
-        }
-
-        if(this.keyS.isDown) {
-            my.sprite.pirateShip.y += pirateSpeed;
+            this.offsetX = 6;
+            this.sound.play("cannonFire", {volume: 0.6});
         }
         
+        // Move Shots
         for(let shot of my.sprite.cannonShots) {
-            shot.x += cannonShotSpeed;
-            if (shot.x > game.config.width) {
-                shot.destroy();
+            if(shot.visible){
+                shot.x += this.cannonShotSpeed;
+            }
+
+            if(shot.x > game.config.width) {
+                shot.visible = false;
             }
         }
 
