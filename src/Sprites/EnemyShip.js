@@ -1,8 +1,11 @@
 class EnemyShip extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y, texture, frame) {
-        this.shipTextures = {"White Flag": "ship (1)"};
         if(!texture) texture = "pirateMisc";
-        if(!frame) frame = "ship (3).png";
+        if(!frame){
+            frame = "ship (1).png"
+        }else{
+            frame = `ship (${frame}).png`;
+        };
 
         super(scene, x, y, texture, frame);
         this.my = {sprite: {}};

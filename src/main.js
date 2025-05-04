@@ -27,7 +27,7 @@ let config = {
     render: {
         pixelArt: true  // prevent pixel art from getting blurred when scaled
     },
-    width: 900,
+    width: 1200,
     height: 600,
     scene: [Sea],
     fps: {
