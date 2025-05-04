@@ -34,7 +34,7 @@ class Sea extends Phaser.Scene {
 
         waterRush.play({loop: true, volume: 0.2});
         windAmbience.play({loop: true, volume: 0.2});
-        music.play({loop: true, volume: 0.2});
+        //music.play({loop: true, volume: 0.2});
 
         // Sea scene variables
         this.pirateSpeed = 6, this.shotSpeed = 12;
@@ -68,7 +68,7 @@ class Sea extends Phaser.Scene {
         my.sprite.cannonSmoke[2].visible = false;
 
         // New enemy for testing
-        my.sprite.enemyShip = new RedCross(this, 200, 200);
+        //my.sprite.enemyShip = new EnemyShip(this, 200, 200);
     }
 
     update(){
@@ -132,6 +132,6 @@ class Sea extends Phaser.Scene {
             }
         }
 
-        my.sprite.enemyShip.update();
+        //my.sprite.enemyShip.update();
     }
 }
