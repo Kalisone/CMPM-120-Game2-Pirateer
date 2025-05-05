@@ -2,10 +2,10 @@ class EnemyShip extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y, frame, texture) {
         if(!texture) texture = "pirateMisc";
         if(!frame || frame < 0  || frame > 6) frame = 1;
+        
+        super(scene, x, y, texture, `ship (${frame}).png`);
 
-        this.type = `ship (${frame}).png`;
-
-        super(scene, x, y, texture, this.type);
+        this.type = frame;
 
         /* Ship types in base game; HP stages = {3, 2, 1, 0}:
          * {1, 7, 13, 19}: White Flag; 2 lives (6 HP), 1 spd, 1 pt
