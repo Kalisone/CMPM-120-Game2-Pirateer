@@ -29,7 +29,7 @@ class PlayerShip extends Phaser.GameObjects.Sprite{
         }
 
         // HEALTH
-        if(this.hp < this.maxHP){ // visual health update to ship
+        if(this.hp < this.maxHP){ // diegetic health indicator
             let stage = Math.trunc((-2 / this.maxHP) * this.hp + 2) + 1;
             this.setFrame(`ship (${6 * stage + this.type}).png`);
         }
