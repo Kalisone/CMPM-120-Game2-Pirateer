@@ -148,14 +148,16 @@ class Sea extends Phaser.Scene {
             // Collision detection + handling w/ player shots
             for(let shot of my.sprite.shots){
                 if(!ship.destroyed && this.collides(ship, shot)){
+                    // Hit Animation
                     this.hitSmoke = this.add.sprite(shot.x, shot.y).setScale(0.6).play("hitSmoke");
 
                     ship.hp -= shot.shotDmg;
                     shot.deactivate();
 
+                    // Death Animations & sounds
                     if(ship.hp <= 0){
                         this.sound.play("shipSunk");
-                        this.add.sprite(ship.x, ship.y).play("hitSmoke");
+                        this.add.sprite(ship.x, ship.y).play("gunSmoke");
                         this.updateScore(ship.points);
                     }else{
                         this.sound.play("enemyHit");
@@ -171,10 +173,11 @@ class Sea extends Phaser.Scene {
                     this.updateScore(ship.points);
                 }
 
-                this.playerSmoke = this.add.sprite(my.sprite.pirateShip.x, my.sprite.pirateShip.y).play("gunSmoke");
-
                 ship.hp = 0;
                 my.sprite.pirateShip.hp = 0;
+
+                // Animations & sounds
+                this.playerSmoke = this.add.sprite(my.sprite.pirateShip.x, my.sprite.pirateShip.y).play("gunSmoke");
 
                 this.sound.play("playerHit");
                 this.sound.play("shipSunk");
