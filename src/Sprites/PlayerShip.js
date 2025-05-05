@@ -1,19 +1,28 @@
-class PlayerShip extends Phaser.GameObject.Sprite{
-    constructor(scene, x, y, texture, frame) {
+class PlayerShip extends Phaser.GameObjects.Sprite{
+    constructor(scene, x, y, keyUp, keyDown, speed, frame, texture) {
         if(!texture) texture = "pirateMisc";
         if(!frame) frame = "ship (3).png";
 
         super(scene, x, y, texture, frame);
-        this.my = {sprite: {}};
-        let my = this.my;
-        this.scene = scene;
+        
+        this.keyUp = keyUp, this.keyDown = keyDown;
+        this.shipSpeed = speed;
 
-        my.x = x, my.y = y;
-        this.health = 15, this.points = 3, this.speed = 2, this.shotSpeed = 12;
+        scene.add.existing(this);
+        return this;
+    }
 
-        // Create
-        this.maxShots = 12, this.reload = 36, this.reloadCounter = 0;
+    update(){
+        if(this.keyUp.isDown){
+            if(this.y > this.displayWidth/2){
+                this.y -= this.shipSpeed;
+            }
+        }
 
-        my.sprite.cannonShots = [], my.sprite.cannonSmoke = [];
+        if(this.keyDown.isDown){
+            if(this.y < (game.config.width - (this.displayWidth/2))){
+                this.y == this.shipSpeed;
+            }
+        }
     }
 }

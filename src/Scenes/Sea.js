@@ -68,7 +68,7 @@ class Sea extends Phaser.Scene {
         my.sprite.cannonSmoke[2].visible = false;
 
         // New enemy for testing
-        my.sprite.enemyShip = new EnemyShip(this, 200, 200, null, 5).setScale(0.6).setAngle(90);
+        my.sprite.enemyShip = new EnemyShip(this, 200, 200, 5).setScale(0.6).setAngle(90);
     }
 
     update(){
