@@ -1,3 +1,5 @@
+var maxWaves = 3;
+
 class Sea extends Phaser.Scene {
     constructor() {
         super("sea"); // super({ key: 'Sea' });
@@ -46,12 +48,13 @@ class Sea extends Phaser.Scene {
         // Sea scene variables
         let my = this.my;
 
+        this.wave = 1;
+
         my.sprite.shots = [];
-        this.maxShots = 12, this.reload = 36, this.reloadCounter = 0;
+        this.maxShots = 12, this.reload = 36, this.reloadTimer = 0;
 
         my.sprite.enemies = [];
-        this.maxEnemies = 12;
-        my.sprite.cannonShots = [], my.sprite.cannonSmoke = [];
+        this.maxEnemies = 12, this.enemyCooldown = 108, this.enemyTimer = 0;
         
         // PLAYER CREATION
         let keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
@@ -62,7 +65,7 @@ class Sea extends Phaser.Scene {
 
         // Pirate Ship Cannon Shots
         for(let i = 0; i < this.maxShots; i++){
-            my.sprite.cannonShots.push(new Shot(this, -100, -100));
+            my.sprite.shots.push(new Shot(this, -100, -100));
         }
 
         // Pirate Ship Gun Smoke
@@ -99,14 +102,14 @@ class Sea extends Phaser.Scene {
 
         // PIRATE UPDATES
         // Cannon Fire
-        if(this.reloadCounter-- <= 0 && this.keySpace.isDown) {
-            for(let shot of my.sprite.cannonShots){
+        if(this.reloadTimer-- <= 0 && this.keySpace.isDown) {
+            for(let shot of my.sprite.shots){
                 if(!shot.active){
                     shot.x = my.sprite.pirateShip.x + (shot.displayWidth / 2);
                     shot.y = my.sprite.pirateShip.y;
                     shot.activate()
 
-                    this.reloadCounter = this.reload;
+                    this.reloadTimer = this.reload;
                     break;
                 }
             }
@@ -118,19 +121,31 @@ class Sea extends Phaser.Scene {
         }
 
         // Shot Updates
-        for(let shot of my.sprite.cannonShots){
+        for(let shot of my.sprite.shots){
             shot.update();
         }
 
         my.sprite.pirateShip.update();
 
         // ENEMY UPDATES
-        /*
-        for(let ship of my.sprite.enemyShips){
+        for(let ship of my.sprite.enemies){
             if(ship.active){
                 //ship.update();
             }
-        }*/
+        }
+
+        // WAVES
+        if(this.wave <= maxWaves){
+            if(this.enemyTimer-- <= 0){
+                for(let ship of my.sprite.enemies){
+                    if(!ship.active){
+                        ship.activate();
+
+                        this.enemyTimer = this.enemyCooldown;
+                    }
+                }
+            }
+        }
     }
 
     // HELPER FUNCTIONS
