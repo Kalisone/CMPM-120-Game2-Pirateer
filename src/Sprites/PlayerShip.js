@@ -2,7 +2,7 @@ class PlayerShip extends Phaser.GameObjects.Sprite{
     constructor(scene, x, y, keyUp, keyDown, speed, frame, texture) {
         if(!texture) texture = "pirateMisc";
         if(!frame){
-            frame = "ship (3).png"
+            frame = "ship (2).png"
         }else{
             frame = `ship (${frame}).png`;
         };
