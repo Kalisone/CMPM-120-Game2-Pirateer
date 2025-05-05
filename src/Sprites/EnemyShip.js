@@ -84,11 +84,13 @@ class EnemyShip extends Phaser.GameObjects.Sprite {
     activate(){
         this.active = true;
         this.visible = true;
+        this.destroyed = false;
     }
 
     deactivate(){
         this.active = false;
         this.visible = false;
+        this.destroyed = true;
     }
 
 /*
