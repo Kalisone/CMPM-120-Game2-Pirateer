@@ -10,6 +10,7 @@ class Shot extends Phaser.GameObjects.Sprite{
 
         this.visible = false, this.active = false;
 
+        scene.add.existing(this);
         return this;
     }
 

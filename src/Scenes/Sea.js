@@ -68,9 +68,9 @@ class Sea extends Phaser.Scene {
             my.sprite.cannonShots[i].visible = false;*/
         }
 
-        // Pirate Ship Cannon Smoke
+        // Pirate Ship Gun Smoke
         this.anims.create({
-            key: "cannonSmoke",
+            key: "gunSmoke",
             frames: [
                 {key: "tanks", frame: "smokeYellow3.png"},
                 {key: "tanks", frame: "smokeOrange3.png"},
@@ -85,6 +85,11 @@ class Sea extends Phaser.Scene {
             hideOnComplete: true
         });
 
+        for (let i=0; i<this.maxEnemies; i++){
+            let rx = Math.random * 
+            my.sprite.enemies.push(new EnemyShip(this, ))
+        }
+
         // New enemy for testing
         my.sprite.enemyShip = new EnemyShip(this, 200, 200, 6).setScale(0.6).setAngle(90);
         my.sprite.enemyShip.x = game.config.width + my.sprite.enemyShip.displayHeight/2;
@@ -93,24 +98,26 @@ class Sea extends Phaser.Scene {
     update(){
         let my = this.my;
 
-        // Fire Cannon
+        // Pirate Cannon
         if(this.reloadCounter-- <= 0 && this.keySpace.isDown) {
-            let offsetX = 8;
-
             for(let shot of my.sprite.cannonShots){
                 if(!shot.active){
-                    console.log(shot.active, shot.visible, shot.direction, shot.shotSpeed, shot.x, shot.y);
-                    shot.x = my.sprite.pirateShip.x + (shot.displayWidth / 2) + offsetX;
+                    console.log(shot.active, shot.visible, shot.x, shot.y);
+
+                    shot.x = my.sprite.pirateShip.x + (shot.displayWidth / 2);
                     shot.y = my.sprite.pirateShip.y;
                     shot.activate()
 
                     this.reloadCounter = this.reload;
-                    console.log(shot.active, shot.visible, shot.direction, shot.shotSpeed, shot.x, shot.y);
+                    
+                    console.log(shot.active, shot.visible, shot.x, shot.y);
+                    
                     break;
                 }
             }
 
-            this.add.sprite(my.sprite.pirateShip.x + (my.sprite.pirateShip.displayHeight/2), my.sprite.pirateShip.y, "smokeWhite5.png").setScale(0.6).play("cannonSmoke");
+            // Gun Smoke
+            this.add.sprite(my.sprite.pirateShip.x + (my.sprite.pirateShip.displayHeight/3), my.sprite.pirateShip.y, "smokeWhite5.png").setScale(0.6).play("gunSmoke");
 
             this.sound.play("cannonFire");
         }
@@ -136,5 +143,10 @@ class Sea extends Phaser.Scene {
 
         my.sprite.enemyShip.update();
         my.sprite.pirateShip.update();
+    }
+
+    // HELPER FUNCTIONS
+    randRange(min, max){
+        return Math.round(Math.random() * (max - min) + min);
     }
 }
