@@ -57,14 +57,16 @@ class EnemyShip extends Phaser.GameObjects.Sprite {
     }
 
     update(){
-        // HEALTH
-        if(this.hp < this.maxHP){ // diegetic health indicator
-            let stage = Math.trunc((-2 / this.maxHP) * this.hp + 2) + 1;
-            this.setFrame(`ship (${6 * stage + this.type}).png`);
-        }
+        if(this.active){
+            // HEALTH
+            if(this.hp < this.maxHP){ // diegetic health indicator
+                let stage = Math.trunc((-2 / this.maxHP) * this.hp + 2) + 1;
+                this.setFrame(`ship (${6 * stage + this.type}).png`);
+            }
 
-        if(this.x > 0 - this.displayHeight/2){
-            this.x -= this.shipSpeed;
+            if(this.x > 0 - this.displayHeight/2){
+                this.x -= this.shipSpeed;
+            }
         }
     }
 

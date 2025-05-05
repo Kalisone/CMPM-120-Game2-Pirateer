@@ -87,13 +87,14 @@ class Sea extends Phaser.Scene {
 
         // ENEMY CREATION
         for (let i=0; i<this.maxEnemies; i++){
-            let rx = game.config.width+100, ry = this.randRange(game.config.height/6, game.config.height*5/6);
+            let rx = game.config.width + my.sprite.pirateShip.displayHeight / 2;
+            let ry = this.randRange(my.sprite.pirateShip.displayWidth, game.config.height - my.sprite.pirateShip.displayWidth);
             
             // ~{20% White Marks, 33% Red Crosses, 75% Green Swords, 75% Blue Cavaliers, 33% Yellow Marks}
             let type = [1, 1, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6];
             type = type[this.randRange(0, type.length-1)]
 
-            my.sprite.enemies.push(new EnemyShip(this, rx-500, ry, type).setScale(0.6).setAngle(90));
+            my.sprite.enemies.push(new EnemyShip(this, rx, ry, type).setScale(0.6).setAngle(90));
         }
     }
 
@@ -129,9 +130,7 @@ class Sea extends Phaser.Scene {
 
         // ENEMY UPDATES
         for(let ship of my.sprite.enemies){
-            if(ship.active){
-                //ship.update();
-            }
+            ship.update();
         }
 
         // WAVES
@@ -140,8 +139,8 @@ class Sea extends Phaser.Scene {
                 for(let ship of my.sprite.enemies){
                     if(!ship.active){
                         ship.activate();
-
                         this.enemyTimer = this.enemyCooldown;
+                        break;
                     }
                 }
             }
