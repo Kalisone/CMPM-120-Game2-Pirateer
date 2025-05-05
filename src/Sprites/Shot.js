@@ -8,7 +8,7 @@ class Shot extends Phaser.GameObjects.Sprite{
         this.direction = (direction ? direction : 1);
         this.shotSpeed = (speed ? speed : 12);
 
-        this.visible = true, this.active = false;
+        this.visible = false, this.active = false;
 
         return this;
     }
@@ -20,15 +20,19 @@ class Shot extends Phaser.GameObjects.Sprite{
                 default:
                 case 1: // Left
                     this.x += this.shotSpeed;
+                    if(this.x > game.config.width) this.deactivate();
                     break;
                 case 2: // Right
                     this.x -= this.shotSpeed;
+                    if(this.x < -this.displayWidth/2) this.deactivate();
                     break;
                 case 3: // Down
                     this.y += this.shotSpeed;
+                    if(this.y > game.config.height + this.displayHeight/2) this.deactivate();
                     break;
                 case 4: // Up
                     this.y -= this.shotSpeed;
+                    if(this.y < -this.displayHeight/2) this.deactivate();
                     break;
             }
         }
@@ -42,6 +46,6 @@ class Shot extends Phaser.GameObjects.Sprite{
 
     deactivate(){
         this.visible = false;
-        this.visible = false;
+        this.active = false;
     }
 }

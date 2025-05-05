@@ -62,34 +62,29 @@ class Sea extends Phaser.Scene {
 
         // Pirate Ship Cannon Shots
         for(let i = 0; i < this.maxShots; i++){
-            my.sprite.cannonShots.push(new Shot(this, 100, 100));
+            my.sprite.cannonShots.push(new Shot(this, -100, -100));
+            /*
+            my.sprite.cannonShots.push(this.add.sprite(-100, -100, "pirateMisc", "cannonBall.png"));
+            my.sprite.cannonShots[i].visible = false;*/
         }
-        
+
         // Pirate Ship Cannon Smoke
-        my.sprite.cannonSmoke.push(this.add.sprite(-100, -100, "tanks", "smokeWhite0.png").setScale(0.4).setAlpha(0.9));
-        my.sprite.cannonSmoke[0].visible = false;
-
-        my.sprite.cannonSmoke.push(this.add.sprite(-100, -100, "tanks", "smokeWhite4.png").setScale(0.3).setAlpha(0.7));
-        my.sprite.cannonSmoke[1].visible = false;
-
-        my.sprite.cannonSmoke.push(this.add.sprite(-100, -100, "tanks", "smokeWhite5.png").setScale(0.3).setAlpha(0.5));
-        my.sprite.cannonSmoke[2].visible = false;
-/*
         this.anims.create({
             key: "cannonSmoke",
-            frames: [{
-                key: "tanks",
-                frames: [{
-                            key: "smokeWhite0.png",
-                            key: "smokeWhite4.png",
-                            key: "smokeWhite5.png"
-                        }
-                    ]
-                }
-            ]
-
+            frames: [
+                {key: "tanks", frame: "smokeYellow3.png"},
+                {key: "tanks", frame: "smokeOrange3.png"},
+                {key: "tanks", frame: "smokeWhite2.png"},
+                {key: "tanks", frame: "smokeGrey3.png"},
+                {key: "tanks", frame: "smokeWhite1.png"},
+                {key: "tanks", frame: "smokeGrey2.png"},
+                {key: "tanks", frame: "smokeWhite0.png"},
+                {key: "tanks", frame: "smokeGrey1.png"}
+            ],
+            frameRate: 45,
+            hideOnComplete: true
         });
-*/
+
         // New enemy for testing
         my.sprite.enemyShip = new EnemyShip(this, 200, 200, 6).setScale(0.6).setAngle(90);
         my.sprite.enemyShip.x = game.config.width + my.sprite.enemyShip.displayHeight/2;
@@ -100,52 +95,43 @@ class Sea extends Phaser.Scene {
 
         // Fire Cannon
         if(this.reloadCounter-- <= 0 && this.keySpace.isDown) {
-            this.offsetX = 8;
+            let offsetX = 8;
 
             for(let shot of my.sprite.cannonShots){
                 if(!shot.active){
-                    shot.x = my.sprite.pirateShip.x + (shot.displayWidth / 2)+ this.offsetX;
+                    console.log(shot.active, shot.visible, shot.direction, shot.shotSpeed, shot.x, shot.y);
+                    shot.x = my.sprite.pirateShip.x + (shot.displayWidth / 2) + offsetX;
                     shot.y = my.sprite.pirateShip.y;
                     shot.activate()
 
                     this.reloadCounter = this.reload;
+                    console.log(shot.active, shot.visible, shot.direction, shot.shotSpeed, shot.x, shot.y);
                     break;
                 }
             }
 
-            for(let smoke of my.sprite.cannonSmoke) {
-                if(!smoke.visible){
-                    smoke.x = my.sprite.pirateShip.x + (smoke.displayWidth / 2) + this.offsetX;
-                    smoke.y = my.sprite.pirateShip.y;
-                    smoke.visible = true;
+            this.add.sprite(my.sprite.pirateShip.x + (my.sprite.pirateShip.displayHeight/2), my.sprite.pirateShip.y, "smokeWhite5.png").setScale(0.6).play("cannonSmoke");
 
-                    this.offsetX += smoke.displayWidth / 3;
-
-                    this.tweens.add({
-                        targets: smoke,
-                        alpha: 0,
-                        duration: 600,
-                        ease: "Linear",
-                        delay: this.offsetX * 5,
-                        onComplete: () => {
-                            smoke.visible = false;
-                            smoke.alpha = 0.9;
-                        }
-                    });
-                }
-            }
             this.sound.play("cannonFire");
         }
 
         // Move Shots
+        /*
         for(let shot of my.sprite.cannonShots) {
-            if(shot.active){
+            if(shot.visible){
                 shot.update();
+                //shot.x += 12;
             }
 
             if(shot.x > game.config.width) {
-                shot.deactivate();
+                //shot.deactivate();
+                shot.visible = false;
             }
+        }
+            */
+
+        for(let shot of my.sprite.cannonShots){
+            shot.update();
         }
 
         my.sprite.enemyShip.update();
