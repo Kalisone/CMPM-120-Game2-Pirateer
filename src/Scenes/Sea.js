@@ -156,6 +156,7 @@ class Sea extends Phaser.Scene {
                     if(ship.hp <= 0){
                         this.sound.play("shipSunk");
                         this.add.sprite(ship.x, ship.y).play("hitSmoke");
+                        this.updateScore(ship.points);
                     }else{
                         this.sound.play("enemyHit");
                     }
@@ -166,6 +167,8 @@ class Sea extends Phaser.Scene {
             if(!my.sprite.pirateShip.destroyed && this.collides(ship, my.sprite.pirateShip)){
                 if(!ship.destroyed){
                     this.destroyedSmoke = this.add.sprite(ship.x, ship.y).play("hitSmoke");
+                }else{
+                    this.updateScore(ship.points);
                 }
 
                 this.playerSmoke = this.add.sprite(my.sprite.pirateShip.x, my.sprite.pirateShip.y).play("gunSmoke");
