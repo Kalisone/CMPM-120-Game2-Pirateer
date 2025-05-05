@@ -5,8 +5,8 @@ class Sea extends Phaser.Scene {
         my.enemies = [];
         this.maxEnemies = 12;
 
-        this.originX = 100;
-        this.originY = game.config.height / 2;
+        this.playerX_OG = 100;
+        this.playerY_OG = game.config.height / 2;
     }
 
     preload() {
@@ -49,7 +49,8 @@ class Sea extends Phaser.Scene {
         this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         // Add Pirate Ship
-        my.sprite.pirateShip = this.add.sprite(this.originX, this.originY, "pirateMisc", "ship (2).png").setScale(0.6).setAngle(270);
+        my.sprite.pirateShip = this.add.sprite(this.playerX_OG, this.playerY_OG, "pirateMisc", "ship (2).png").setScale(0.6).setAngle(270);
+        //my.sprite.pirateShip = new PlayerShip(this, this.playerX_OG, this.playerY_OG)
 
         // Pirate Ship Cannon Shots
         for(let i = 0; i < this.maxShots; i++){

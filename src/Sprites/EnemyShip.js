@@ -1,13 +1,53 @@
 class EnemyShip extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y, frame, texture) {
         if(!texture) texture = "pirateMisc";
-        if(!frame){
-            frame = "ship (1).png"
-        }else{
-            frame = `ship (${frame}).png`;
-        };
+        if(!frame || frame < 0  || frame > 6) frame = 1;
 
-        super(scene, x, y, texture, frame);
+        this.type = `ship (${frame}).png`;
+
+        super(scene, x, y, texture, this.type);
+
+        /* Ship types in base game; HP stages = {3, 2, 1, 0}:
+         * {1, 7, 13, 19}: White Flag; 2 lives (6 HP), 1 spd, 1 pt
+         * {2, 8, 14, 20}: Pirate Ship; 5 lives (15 HP), 2 spd, 0 pts
+         * {3, 9, 15, 21}: Red Cross; 5 lives (15 HP), 2 spd, 3 pts
+         * {4, 10, 16, 22}: Green Sword; 1 life (3 HP), 2 spd, 1 pt
+         * {5, 11, 17, 23}: Blue Cavalier; 1 life (3 HP), 4 spd, 1 pt
+         * {6, 12, 18, 24}: Yellow Mark; 3 lives (9 HP), 2 spd, 2 pts
+        **/
+       switch(this.type){
+        default:
+        case 1: // White Flag
+            this.hp = 6;
+            this.shipSpeed = 1;
+            this.points = 1;
+            break;
+        case 2: // Pirate Ship
+            this.hp = 15;
+            this.shipSpeed = 2;
+            this.points = 0;
+            break;
+        case 3: // Red Cross
+            this.hp = 15;
+            this.shipSpeed = 2;
+            this.points = 3;
+            break;
+        case 4: // Green Sword
+            this.hp = 3;
+            this.shipSpeed = 2;
+            this.points = 1;
+            break;
+        case 5: // Blue Cavalier
+            this.hp = 3;
+            this.shipSpeed = 4;
+            this.points = 1;
+            break;
+        case 6: // Yellow Mark
+            this.hp = 9;
+            this.shipSpeed = 3;
+            this.points = 2;
+            break;
+       }
         
         scene.add.existing(this);
         return this;
