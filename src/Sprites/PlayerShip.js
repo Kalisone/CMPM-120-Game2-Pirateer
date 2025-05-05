@@ -10,28 +10,37 @@ class PlayerShip extends Phaser.GameObjects.Sprite{
         this.shipSpeed = (speed ? speed : 6);
         this.maxHP = this.hp = 15;
 
+        this.active = true, this.visible = true, this.destroyed = false;
+
         scene.add.existing(this);
         return this;
     }
 
     update(){
-        // MOVEMENT
-        if(this.keyUp.isDown){ // move up
-            if(this.y > this.displayWidth/2){
-                this.y -= this.shipSpeed;
+        if(this.active){
+            // MOVEMENT
+            if(this.keyUp.isDown){ // move up
+                if(this.y > this.displayWidth/2){
+                    this.y -= this.shipSpeed;
+                }
+            }
+
+            if(this.keyDown.isDown){ // move down
+                if(this.y < (game.config.height - (this.displayWidth/2))){
+                    this.y += this.shipSpeed;
+                }
+            }
+
+            // HEALTH
+            if(this.hp < this.maxHP){ // diegetic health indicator
+                let stage = Math.trunc((-2 / this.maxHP) * this.hp + 2) + 1;
+                this.setFrame(`ship (${6 * stage + this.type}).png`);
             }
         }
 
-        if(this.keyDown.isDown){ // move down
-            if(this.y < (game.config.height - (this.displayWidth/2))){
-                this.y += this.shipSpeed;
-            }
-        }
-
-        // HEALTH
-        if(this.hp < this.maxHP){ // diegetic health indicator
-            let stage = Math.trunc((-2 / this.maxHP) * this.hp + 2) + 1;
-            this.setFrame(`ship (${6 * stage + this.type}).png`);
+        if(this.hp <= 0){
+            this.destroyed = true;
+            this.active = false;
         }
     }
 }

@@ -1,5 +1,5 @@
 class Shot extends Phaser.GameObjects.Sprite{
-    constructor(scene, x, y, direction, speed, frame, texture){
+    constructor(scene, x, y, direction, speed, dmg, frame, texture){
         if(!texture) texture = "pirateMisc";
         if(!frame) frame = "cannonBall.png";
 
@@ -7,6 +7,7 @@ class Shot extends Phaser.GameObjects.Sprite{
 
         this.direction = (direction ? direction : 1);
         this.shotSpeed = (speed ? speed : 12);
+        this.shotDmg = (dmg ? shotDmg : 3);
 
         this.visible = false, this.active = false;
 
@@ -48,5 +49,6 @@ class Shot extends Phaser.GameObjects.Sprite{
     deactivate(){
         this.visible = false;
         this.active = false;
+        this.x = -100, this.y = -100;
     }
 }

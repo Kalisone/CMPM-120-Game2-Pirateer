@@ -14,15 +14,14 @@ class Sea extends Phaser.Scene {
 
         // Sprites
         this.load.atlasXML("pirateMisc", "piratePack_ships_spritesheet.png", "piratePack_ships_spritesheet.xml");
-        this.load.atlasXML("uiAdventure", "ui_adventure_spritesheet.png", "ui_adventure_spritesheet.xml");
         this.load.atlasXML("tanks", "tanks_spritesheet.png", "tanks_spritesheet.xml");
         // this.load.image("pirateTiles", "piratePack_tilesheet"); // tiles
 
         // Sound Effects
         this.load.audio("cannonFire", "cannonFire.mp3");
-        this.load.audio("woodSmash_0", "woodSmash_0.mp3");
-        this.load.audio("woodSmash_1", "woodSmash_1.mp3");
-        this.load.audio("woodSmash_2", "woodSmash_2.mp3");
+        this.load.audio("playerHit", "woodSmash_0.mp3");
+        this.load.audio("shipSunk", "woodSmash_1.mp3");
+        this.load.audio("enemyHit", "woodSmash_2.mp3");
         this.load.audio("waterRush", "waterRush_0.mp3");
         this.load.audio("windAmbience", "windAmbience_0.mp3");
 
@@ -70,6 +69,23 @@ class Sea extends Phaser.Scene {
         this.anims.create({
             key: "gunSmoke",
             frames: [
+                {key: "pirateMisc", frame: "explosion3.png"},
+                {key: "pirateMisc", frame: "explosion2.png"},
+                {key: "pirateMisc", frame: "explosion1.png"},
+                {key: "tanks", frame: "smokeWhite2.png"},
+                {key: "tanks", frame: "smokeGrey3.png"},
+                {key: "tanks", frame: "smokeWhite1.png"},
+                {key: "tanks", frame: "smokeGrey2.png"},
+                {key: "tanks", frame: "smokeWhite0.png"},
+                {key: "tanks", frame: "smokeGrey1.png"}
+            ],
+            frameRate: 45,
+            hideOnComplete: true
+        });
+
+        this.anims.create({
+            key: "hitSmoke",
+            frames: [
                 {key: "tanks", frame: "smokeYellow3.png"},
                 {key: "tanks", frame: "smokeOrange3.png"},
                 {key: "tanks", frame: "smokeWhite2.png"},
@@ -85,11 +101,10 @@ class Sea extends Phaser.Scene {
 
         // ENEMY CREATION
         for (let i=0; i<this.maxEnemies; i++){
-            let rx = game.config.width + my.sprite.pirateShip.displayHeight / 2 + this.randRange(0, game.config.width / 6);
+            let rx = game.config.width + my.sprite.pirateShip.displayHeight / 2 + this.randRange(0, game.config.width / 8);
             let ry = this.randRange(my.sprite.pirateShip.displayWidth, game.config.height - my.sprite.pirateShip.displayWidth);
             
-            // ~{20% White Marks, 33% Red Crosses, 75% Green Swords, 75% Blue Cavaliers, 33% Yellow Marks}
-            let type = [1, 1, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6];
+            let type = [1, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6];
             type = type[this.randRange(0, type.length-1)]
 
             my.sprite.enemies.push(new EnemyShip(this, rx, ry, type).setScale(0.6).setAngle(90));
@@ -101,7 +116,7 @@ class Sea extends Phaser.Scene {
 
         // PIRATE UPDATES
         // Cannon Fire
-        if(this.reloadTimer-- <= 0 && this.keySpace.isDown) {
+        if(!my.sprite.pirateShip.destroyed && this.reloadTimer-- <= 0 && this.keySpace.isDown) {
             for(let shot of my.sprite.shots){
                 if(!shot.active){
                     shot.x = my.sprite.pirateShip.x + (shot.displayWidth / 2);
@@ -114,21 +129,53 @@ class Sea extends Phaser.Scene {
             }
 
             // Gun Smoke
-            this.add.sprite(my.sprite.pirateShip.x + (my.sprite.pirateShip.displayHeight/3), my.sprite.pirateShip.y, "smokeWhite5.png").setScale(0.6).play("gunSmoke");
+            this.add.sprite(my.sprite.pirateShip.x + (my.sprite.pirateShip.displayHeight/3), my.sprite.pirateShip.y).setScale(0.6).play("gunSmoke");
 
             this.sound.play("cannonFire");
         }
 
-        // Shot Updates
+        my.sprite.pirateShip.update();
+
+        // SHOT UPDATES
         for(let shot of my.sprite.shots){
             shot.update();
         }
 
-        my.sprite.pirateShip.update();
-
         // ENEMY UPDATES
         for(let ship of my.sprite.enemies){
             ship.update();
+
+            // Collision detection + handling w/ player shots
+            for(let shot of my.sprite.shots){
+                if(!ship.destroyed && this.collides(ship, shot)){
+                    this.hitSmoke = this.add.sprite(shot.x, shot.y).setScale(0.6).play("hitSmoke");
+
+                    ship.hp -= shot.shotDmg;
+                    shot.deactivate();
+
+                    if(ship.hp <= 0){
+                        this.sound.play("shipSunk");
+                        this.add.sprite(ship.x, ship.y).play("hitSmoke");
+                    }else{
+                        this.sound.play("enemyHit");
+                    }
+                }
+            }
+
+            // Collision detection + handling w/ player
+            if(!my.sprite.pirateShip.destroyed && this.collides(ship, my.sprite.pirateShip)){
+                if(!ship.destroyed){
+                    this.destroyedSmoke = this.add.sprite(ship.x, ship.y).play("hitSmoke");
+                }
+
+                this.playerSmoke = this.add.sprite(my.sprite.pirateShip.x, my.sprite.pirateShip.y).play("gunSmoke");
+
+                ship.hp = 0;
+                my.sprite.pirateShip.hp = 0;
+
+                this.sound.play("playerHit");
+                this.sound.play("shipSunk");
+            }
         }
 
         // WAVES
@@ -148,5 +195,20 @@ class Sea extends Phaser.Scene {
     // HELPER FUNCTIONS
     randRange(min, max){
         return Math.round(Math.random() * (max - min) + min);
+    }
+
+    collides(a, b){
+        if(Math.abs(a.x - b.x) > (a.displayHeight/2 + b.displayHeight/2)) return false;
+        if(Math.abs(a.y - b.y) > (a.displayWidth/2 + b.displayWidth/2)) return false;
+
+        return true;
+    }
+
+    updateScore(points){
+        if(!points) console.log("Failed to update score, points value not passed.");
+
+        let my = this.my;
+        this.score += points;
+        //my.text.score.setText("Score " + this.score);
     }
 }

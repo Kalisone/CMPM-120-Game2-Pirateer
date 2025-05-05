@@ -6,7 +6,7 @@ class EnemyShip extends Phaser.GameObjects.Sprite {
         super(scene, x, y, texture, `ship (${frameNum}).png`);
         
         this.type = frame;
-        this.active = false, this.visible = true;
+        this.active = false, this.visible = false, this.destroyed = false;
 
         /* Ship types in base game; HP stages = {3, 2, 1, 0}:
          * {1, 7, 13, 19}: White Flag; 2 lives (6 HP), 1 spd, 1 pt
@@ -48,10 +48,7 @@ class EnemyShip extends Phaser.GameObjects.Sprite {
                 this.hp = 9;
                 this.shipSpeed = 2;
                 this.points = 2;
-
-                // Adjusting position for path clearance
-                if(this.y < game.config.height/4) this.y = game.config.height/4;
-                if(this.y > game.config.height/4) this.y = game.config.height * 3/4;
+                this.maxDY = 100
                 break;
         }
         
@@ -64,23 +61,34 @@ class EnemyShip extends Phaser.GameObjects.Sprite {
     update(){
         if(this.active){
             // HEALTH
-            if(this.hp < this.maxHP){ // diegetic health indicator
+            if(this.hp < this.maxHP && !this.destroyed){ // diegetic health indicator
                 let stage = Math.trunc((-2 / this.maxHP) * this.hp + 2) + 1;
                 this.setFrame(`ship (${6 * stage + this.type}).png`);
             }
 
+            if(this.hp <= 0){
+                this.destroyed = true;
+                this.shipSpeed = 1;
+            }
+
             if(this.x > 0 - this.displayHeight/2){
                 this.x -= this.shipSpeed;
+            }
+            
+            if(this.active && this.x < 0 - this.displayHeight/2){
+                this.deactivate();
             }
         }
     }
 
     activate(){
         this.active = true;
+        this.visible = true;
     }
 
     deactivate(){
         this.active = false;
+        this.visible = false;
     }
 
 /*
