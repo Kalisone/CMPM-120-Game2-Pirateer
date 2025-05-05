@@ -1,3 +1,5 @@
+var maxHP = 15;
+
 class PlayerShip extends Phaser.GameObjects.Sprite{
     constructor(scene, x, y, keyUp, keyDown, speed, frame, texture) {
         if(!texture) texture = "pirateMisc";
@@ -10,7 +12,7 @@ class PlayerShip extends Phaser.GameObjects.Sprite{
         super(scene, x, y, texture, frame);
         
         this.keyUp = keyUp, this.keyDown = keyDown;
-        this.shipSpeed = speed;
+        this.shipSpeed = (speed ? speed : 6);
 
         scene.add.existing(this);
         return this;
@@ -26,7 +28,7 @@ class PlayerShip extends Phaser.GameObjects.Sprite{
 
         if(this.keyDown.isDown){
             if(this.y < (game.config.width - (this.displayWidth/2))){
-                this.y == this.shipSpeed;
+                this.y += this.shipSpeed;
             }
         }
 

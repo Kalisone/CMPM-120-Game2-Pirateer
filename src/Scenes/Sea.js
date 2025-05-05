@@ -44,13 +44,13 @@ class Sea extends Phaser.Scene {
         my.sprite.cannonShots = [], my.sprite.cannonSmoke = [];
         
         // Pirate Ship controls
-        this.keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
-        this.keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+        let keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+        let keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         // Add Pirate Ship
         //my.sprite.pirateShip = this.add.sprite(this.playerX_OG, this.playerY_OG, "pirateMisc", "ship (2).png").setScale(0.6).setAngle(270);
-        my.sprite.pirateShip = new PlayerShip(this, this.playerX_OG, this.playerY_OG).setScale(0.6).setAngle(270);
+        my.sprite.pirateShip = new PlayerShip(this, this.playerX_OG, this.playerY_OG, keyW, keyS).setScale(0.6).setAngle(270);
 
         // Pirate Ship Cannon Shots
         for(let i = 0; i < this.maxShots; i++){
@@ -74,7 +74,7 @@ class Sea extends Phaser.Scene {
 
     update(){
         let my = this.my;
-
+/*
         if(this.keyW.isDown) { // move up
             my.sprite.pirateShip.y -= this.pirateSpeed;
         }
@@ -82,7 +82,7 @@ class Sea extends Phaser.Scene {
         if(this.keyS.isDown) { // move down
             my.sprite.pirateShip.y += this.pirateSpeed;
         }
-
+*/
         // Fire Cannon
         if(this.reloadCounter-- <= 0 && this.keySpace.isDown) {
             this.offsetX = 8;
@@ -134,5 +134,6 @@ class Sea extends Phaser.Scene {
         }
 
         //my.sprite.enemyShip.update();
+        my.sprite.pirateShip.update();
     }
 }

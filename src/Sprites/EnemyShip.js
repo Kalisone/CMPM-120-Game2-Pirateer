@@ -1,11 +1,10 @@
+var maxHP = 15;
 class EnemyShip extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y, frame, texture) {
         if(!texture) texture = "pirateMisc";
         if(!frame) frame = 1;
         
         super(scene, x, y, texture, `ship (${frame}).png`);
-
-        var maxHP = 15;
         this.type = frame;
 
         /* Ship types in base game; HP stages = {3, 2, 1, 0}:
