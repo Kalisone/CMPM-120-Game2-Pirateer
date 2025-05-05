@@ -34,4 +34,14 @@ class Shot extends Phaser.GameObjects.Sprite{
         }
 
     }
+
+    activate(){
+        this.visible = true;
+        this.active = true;
+    }
+
+    deactivate(){
+        this.visible = false;
+        this.visible = false;
+    }
 }
