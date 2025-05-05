@@ -1,10 +1,9 @@
-var maxHP = 15;
 class EnemyShip extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y, frame, texture) {
         if(!texture) texture = "pirateMisc";
-        if(!frame) frame = 1;
+        let frameNum = (frame ? frame : 1);
         
-        super(scene, x, y, texture, `ship (${frame}).png`);
+        super(scene, x, y, texture, `ship (${frameNum}).png`);
         this.type = frame;
 
         /* Ship types in base game; HP stages = {3, 2, 1, 0}:
@@ -19,47 +18,47 @@ class EnemyShip extends Phaser.GameObjects.Sprite {
         switch(this.type){
             default:
             case 1: // White Flag
-                maxHP = 6;
+                this.hp = 6;
                 this.shipSpeed = 1;
                 this.points = 1;
                 break;
             case 2: // Pirate Ship
-                //maxHP = 15;
+                this.hp = 15;
                 this.shipSpeed = 2;
                 this.points = 0;
                 break;
             case 3: // Red Cross
-                //maxHP = 15;
+                this.hp = 15;
                 this.shipSpeed = 2;
                 this.points = 3;
                 break;
             case 4: // Green Sword
-                maxHP = 3;
+                this.hp = 3;
                 this.shipSpeed = 2;
                 this.points = 1;
                 break;
             case 5: // Blue Cavalier
-                maxHP = 3;
+                this.hp = 3;
                 this.shipSpeed = 4;
                 this.points = 1;
                 break;
             case 6: // Yellow Mark
-                maxHP = 9;
+                this.hp = 9;
                 this.shipSpeed = 3;
                 this.points = 2;
                 break;
         }
         
-        this.hp = maxHP;
+        this.maxHP = this.hp;
         scene.add.existing(this);
         return this;
     }
 
     update(){
         // HEALTH
-        if(this.hp < maxHP){ // visual health update to ship
-            this.stage = Math.trunc((3/maxHP) * this.hp) * 6 + 1;
-            this.setframe(`ship (${this.stage}).png`);
+        if(this.hp < this.maxHP){ // visual health update to ship
+            this.stage = Math.trunc((3/this.maxHP) * this.hp) * 6 + 1;
+            this.setFrame(`ship (${this.stage}).png`);
         }
     }
 

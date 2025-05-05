@@ -74,7 +74,7 @@ class Sea extends Phaser.Scene {
 
     update(){
         let my = this.my;
-        
+
         // Fire Cannon
         if(this.reloadCounter-- <= 0 && this.keySpace.isDown) {
             this.offsetX = 8;

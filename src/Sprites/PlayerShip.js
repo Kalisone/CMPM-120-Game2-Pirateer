@@ -1,18 +1,14 @@
-var maxHP = 15;
-
 class PlayerShip extends Phaser.GameObjects.Sprite{
     constructor(scene, x, y, keyUp, keyDown, speed, frame, texture) {
         if(!texture) texture = "pirateMisc";
-        if(!frame){
-            frame = "ship (2).png"
-        }else{
-            frame = `ship (${frame}).png`;
-        };
+        let type = (frame ? frame : 2);
 
-        super(scene, x, y, texture, frame);
+        super(scene, x, y, texture, `ship (${type}).png`);
         
+        this.type = type;
         this.keyUp = keyUp, this.keyDown = keyDown;
         this.shipSpeed = (speed ? speed : 6);
+        this.maxHP = this.hp = 15;
 
         scene.add.existing(this);
         return this;
@@ -33,9 +29,9 @@ class PlayerShip extends Phaser.GameObjects.Sprite{
         }
 
         // HEALTH
-        if(this.hp < maxHP){ // visual health update to ship
-            this.stage = Math.trunc((3/maxHP) * this.hp) * 6 + 1;
-            this.setframe(`ship (${this.stage}).png`);
+        if(this.hp < this.maxHP){ // visual health update to ship
+            let stage = Math.trunc((-2 / this.maxHP) * this.hp + 2) + 1;
+            this.setFrame(`ship (${6 * stage + this.type}).png`);
         }
     }
 }
