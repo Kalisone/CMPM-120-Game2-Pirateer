@@ -20,13 +20,13 @@ class PlayerShip extends Phaser.GameObjects.Sprite{
 
     update(){
         // MOVEMENT
-        if(this.keyUp.isDown){
+        if(this.keyUp.isDown){ // move up
             if(this.y > this.displayWidth/2){
                 this.y -= this.shipSpeed;
             }
         }
 
-        if(this.keyDown.isDown){
+        if(this.keyDown.isDown){ // move up
             if(this.y < (game.config.width - (this.displayWidth/2))){
                 this.y += this.shipSpeed;
             }
