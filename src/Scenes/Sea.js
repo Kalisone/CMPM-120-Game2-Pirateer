@@ -53,7 +53,7 @@ class Sea extends Phaser.Scene {
         this.maxEnemies = 12;
         my.sprite.cannonShots = [], my.sprite.cannonSmoke = [];
         
-        // PLAYER
+        // PLAYER CREATION
         let keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         let keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
@@ -63,9 +63,6 @@ class Sea extends Phaser.Scene {
         // Pirate Ship Cannon Shots
         for(let i = 0; i < this.maxShots; i++){
             my.sprite.cannonShots.push(new Shot(this, -100, -100));
-            /*
-            my.sprite.cannonShots.push(this.add.sprite(-100, -100, "pirateMisc", "cannonBall.png"));
-            my.sprite.cannonShots[i].visible = false;*/
         }
 
         // Pirate Ship Gun Smoke
@@ -85,33 +82,31 @@ class Sea extends Phaser.Scene {
             hideOnComplete: true
         });
 
+        // ENEMY CREATION
         for (let i=0; i<this.maxEnemies; i++){
-            let rx = Math.random * 
-            my.sprite.enemies.push(new EnemyShip(this, ))
-        }
+            let rx = game.config.width+100, ry = this.randRange(game.config.height/6, game.config.height*5/6);
+            
+            // ~{20% White Marks, 33% Red Crosses, 75% Green Swords, 75% Blue Cavaliers, 33% Yellow Marks}
+            let type = [1, 1, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6];
+            type = type[this.randRange(0, type.length-1)]
 
-        // New enemy for testing
-        my.sprite.enemyShip = new EnemyShip(this, 200, 200, 6).setScale(0.6).setAngle(90);
-        my.sprite.enemyShip.x = game.config.width + my.sprite.enemyShip.displayHeight/2;
+            my.sprite.enemies.push(new EnemyShip(this, rx-500, ry, type).setScale(0.6).setAngle(90));
+        }
     }
 
     update(){
         let my = this.my;
 
-        // Pirate Cannon
+        // PIRATE UPDATES
+        // Cannon Fire
         if(this.reloadCounter-- <= 0 && this.keySpace.isDown) {
             for(let shot of my.sprite.cannonShots){
                 if(!shot.active){
-                    console.log(shot.active, shot.visible, shot.x, shot.y);
-
                     shot.x = my.sprite.pirateShip.x + (shot.displayWidth / 2);
                     shot.y = my.sprite.pirateShip.y;
                     shot.activate()
 
                     this.reloadCounter = this.reload;
-                    
-                    console.log(shot.active, shot.visible, shot.x, shot.y);
-                    
                     break;
                 }
             }
@@ -122,27 +117,20 @@ class Sea extends Phaser.Scene {
             this.sound.play("cannonFire");
         }
 
-        // Move Shots
-        /*
-        for(let shot of my.sprite.cannonShots) {
-            if(shot.visible){
-                shot.update();
-                //shot.x += 12;
-            }
-
-            if(shot.x > game.config.width) {
-                //shot.deactivate();
-                shot.visible = false;
-            }
-        }
-            */
-
+        // Shot Updates
         for(let shot of my.sprite.cannonShots){
             shot.update();
         }
 
-        my.sprite.enemyShip.update();
         my.sprite.pirateShip.update();
+
+        // ENEMY UPDATES
+        /*
+        for(let ship of my.sprite.enemyShips){
+            if(ship.active){
+                //ship.update();
+            }
+        }*/
     }
 
     // HELPER FUNCTIONS

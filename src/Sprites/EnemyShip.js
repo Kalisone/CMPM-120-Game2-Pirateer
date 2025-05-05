@@ -4,7 +4,9 @@ class EnemyShip extends Phaser.GameObjects.Sprite {
         let frameNum = (frame ? frame : 1);
         
         super(scene, x, y, texture, `ship (${frameNum}).png`);
+        
         this.type = frame;
+        this.active = false, this.visible = true;
 
         /* Ship types in base game; HP stages = {3, 2, 1, 0}:
          * {1, 7, 13, 19}: White Flag; 2 lives (6 HP), 1 spd, 1 pt
@@ -64,6 +66,14 @@ class EnemyShip extends Phaser.GameObjects.Sprite {
         if(this.x > 0 - this.displayHeight/2){
             this.x -= this.shipSpeed;
         }
+    }
+
+    activate(){
+        this.active = true;
+    }
+
+    deactivate(){
+        this.active = false;
     }
 
 /*
