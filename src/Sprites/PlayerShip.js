@@ -30,6 +30,7 @@ class PlayerShip extends Phaser.GameObjects.Sprite{
             }
         }
 
+        // HEALTH
         if(this.hp < maxHP){ // visual health update to ship
             this.stage = Math.trunc((3/maxHP) * this.hp) * 6 + 1;
             this.setframe(`ship (${this.stage}).png`);

@@ -5,7 +5,7 @@ class Shot extends Phaser.GameObjects.Sprite{
 
         super(scene, x, y, texture, frame);
 
-        this.direction = (direction ? direction : "W");
+        this.direction = (direction ? direction : 1);
         this.shotSpeed = (!speed ? speed : 12);
 
         this.visible = false, this.active = false;
@@ -15,9 +15,22 @@ class Shot extends Phaser.GameObjects.Sprite{
 
     update(){
         if(this.active){
-            if(direction === "E"){
-                this.x += this.shotSpeed;
-            }else if(direction)
+            // SHOT DIRECTION
+            switch(this.direction){
+                default:
+                case 1: // Left
+                    this.x += this.shotSpeed;
+                    break;
+                case 2: // Right
+                    this.x -= this.shotSpeed;
+                    break;
+                case 3: // Down
+                    this.y += this.shotSpeed;
+                    break;
+                case 4: // Up
+                    this.y -= this.shotSpeed;
+                    break;
+            }
         }
 
     }
