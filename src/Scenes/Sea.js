@@ -1,5 +1,3 @@
-var maxWaves = 3;
-
 class Sea extends Phaser.Scene {
     constructor() {
         super("sea"); // super({ key: 'Sea' });
@@ -54,7 +52,7 @@ class Sea extends Phaser.Scene {
         this.maxShots = 12, this.reload = 36, this.reloadTimer = 0;
 
         my.sprite.enemies = [];
-        this.maxEnemies = 12, this.enemyCooldown = 108, this.enemyTimer = 0;
+        this.maxEnemies = 9 + maxWaves, this.enemyCooldown = 108, this.enemyTimer = 0;
         
         // PLAYER CREATION
         let keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
@@ -87,7 +85,7 @@ class Sea extends Phaser.Scene {
 
         // ENEMY CREATION
         for (let i=0; i<this.maxEnemies; i++){
-            let rx = game.config.width + my.sprite.pirateShip.displayHeight / 2;
+            let rx = game.config.width + my.sprite.pirateShip.displayHeight / 2 + this.randRange(0, game.config.width / 6);
             let ry = this.randRange(my.sprite.pirateShip.displayWidth, game.config.height - my.sprite.pirateShip.displayWidth);
             
             // ~{20% White Marks, 33% Red Crosses, 75% Green Swords, 75% Blue Cavaliers, 33% Yellow Marks}

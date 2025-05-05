@@ -38,5 +38,6 @@ let config = {
 
 // Global variable to hold sprites
 var my = {sprite: {}};
+var maxWaves = 3;
 
 const game = new Phaser.Game(config);
