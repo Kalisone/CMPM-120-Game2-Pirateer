@@ -44,7 +44,7 @@ class EnemyShip extends Phaser.GameObjects.Sprite {
                 break;
             case 6: // Yellow Mark
                 this.hp = 9;
-                this.shipSpeed = 3;
+                this.shipSpeed = 2;
                 this.points = 2;
                 break;
         }
@@ -59,6 +59,10 @@ class EnemyShip extends Phaser.GameObjects.Sprite {
         if(this.hp < this.maxHP){ // diegetic health indicator
             let stage = Math.trunc((-2 / this.maxHP) * this.hp + 2) + 1;
             this.setFrame(`ship (${6 * stage + this.type}).png`);
+        }
+
+        if(this.x > 0 - this.displayHeight/2){
+            this.x -= this.shipSpeed;
         }
     }
 
