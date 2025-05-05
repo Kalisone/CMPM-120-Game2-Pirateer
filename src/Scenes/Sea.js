@@ -201,8 +201,8 @@ class Sea extends Phaser.Scene {
     }
 
     collides(a, b){
-        if(Math.abs(a.x - b.x) > (a.displayHeight/2 + b.displayHeight/2)) return false;
-        if(Math.abs(a.y - b.y) > (a.displayWidth/2 + b.displayWidth/2)) return false;
+        if(Math.abs(a.x - b.x) > (a.displayHeight*2/5 + b.displayHeight*2/5)) return false;
+        if(Math.abs(a.y - b.y) > (a.displayWidth*2/5 + b.displayWidth*2/5)) return false;
 
         return true;
     }
