@@ -3,12 +3,6 @@ class Sea extends Phaser.Scene {
         super("sea"); // super({ key: 'Sea' });
         this.my = {sprite: {}, text: {}};
 
-        this.my.sprite.shots = [];
-        this.maxShots = 12, this.reload = 36, this.reloadCounter = 0;
-
-        this.my.sprite.enemies = [];
-        this.maxEnemies = 12;
-
         this.playerX_OG = 100;
         this.playerY_OG = game.config.height / 2;
 
@@ -51,7 +45,25 @@ class Sea extends Phaser.Scene {
 
         // Sea scene variables
         let my = this.my;
+
+        my.sprite.shots = [];
+        this.maxShots = 12, this.reload = 36, this.reloadCounter = 0;
+
+        my.sprite.enemies = [];
+        this.maxEnemies = 12;
         my.sprite.cannonShots = [], my.sprite.cannonSmoke = [];
+        
+        // PLAYER
+        let keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+        let keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+        this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+
+        my.sprite.pirateShip = new PlayerShip(this, this.playerX_OG, this.playerY_OG, keyW, keyS).setScale(0.6).setAngle(270);
+
+        // Pirate Ship Cannon Shots
+        for(let i = 0; i < this.maxShots; i++){
+            my.sprite.cannonShots.push(new Shot(this, 100, 100));
+        }
         
         // Pirate Ship Cannon Smoke
         my.sprite.cannonSmoke.push(this.add.sprite(-100, -100, "tanks", "smokeWhite0.png").setScale(0.4).setAlpha(0.9));
@@ -62,7 +74,7 @@ class Sea extends Phaser.Scene {
 
         my.sprite.cannonSmoke.push(this.add.sprite(-100, -100, "tanks", "smokeWhite5.png").setScale(0.3).setAlpha(0.5));
         my.sprite.cannonSmoke[2].visible = false;
-
+/*
         this.anims.create({
             key: "cannonSmoke",
             frames: [{
@@ -77,20 +89,7 @@ class Sea extends Phaser.Scene {
             ]
 
         });
-
-        // PLAYER
-        let keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
-        let keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
-        this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-
-        my.sprite.pirateShip = new PlayerShip(this, this.playerX_OG, this.playerY_OG, keyW, keyS).setScale(0.6).setAngle(270);
-
-        // Pirate Ship Cannon Shots
-        for(let i = 0; i < this.maxShots; i++){
-            my.sprite.cannonShots.push(this.add.sprite(-100, -100, "pirateMisc", "cannonBall.png"));
-            my.sprite.cannonShots[i].visible = false;
-        }
-
+*/
         // New enemy for testing
         my.sprite.enemyShip = new EnemyShip(this, 200, 200, 6).setScale(0.6).setAngle(90);
         my.sprite.enemyShip.x = game.config.width + my.sprite.enemyShip.displayHeight/2;
@@ -104,10 +103,10 @@ class Sea extends Phaser.Scene {
             this.offsetX = 8;
 
             for(let shot of my.sprite.cannonShots){
-                if(!shot.visible){
+                if(!shot.active){
                     shot.x = my.sprite.pirateShip.x + (shot.displayWidth / 2)+ this.offsetX;
                     shot.y = my.sprite.pirateShip.y;
-                    shot.visible = true;
+                    shot.activate()
 
                     this.reloadCounter = this.reload;
                     break;
@@ -137,15 +136,15 @@ class Sea extends Phaser.Scene {
             }
             this.sound.play("cannonFire");
         }
-        
+
         // Move Shots
         for(let shot of my.sprite.cannonShots) {
-            if(shot.visible){
-                shot.x += this.shotSpeed;
+            if(shot.active){
+                shot.update();
             }
 
             if(shot.x > game.config.width) {
-                shot.visible = false;
+                shot.deactivate();
             }
         }
 

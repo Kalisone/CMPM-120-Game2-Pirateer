@@ -6,9 +6,9 @@ class Shot extends Phaser.GameObjects.Sprite{
         super(scene, x, y, texture, frame);
 
         this.direction = (direction ? direction : 1);
-        this.shotSpeed = (!speed ? speed : 12);
+        this.shotSpeed = (speed ? speed : 12);
 
-        this.visible = false, this.active = false;
+        this.visible = true, this.active = false;
 
         return this;
     }
