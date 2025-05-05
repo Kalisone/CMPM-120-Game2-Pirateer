@@ -48,10 +48,15 @@ class EnemyShip extends Phaser.GameObjects.Sprite {
                 this.hp = 9;
                 this.shipSpeed = 2;
                 this.points = 2;
+
+                // Adjusting position for path clearance
+                if(this.y < game.config.height/4) this.y = game.config.height/4;
+                if(this.y > game.config.height/4) this.y = game.config.height * 3/4;
                 break;
         }
         
         this.maxHP = this.hp;
+
         scene.add.existing(this);
         return this;
     }
