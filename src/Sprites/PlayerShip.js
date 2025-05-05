@@ -17,6 +17,7 @@ class PlayerShip extends Phaser.GameObjects.Sprite{
     }
 
     update(){
+        // MOVEMENT
         if(this.keyUp.isDown){
             if(this.y > this.displayWidth/2){
                 this.y -= this.shipSpeed;
@@ -27,6 +28,11 @@ class PlayerShip extends Phaser.GameObjects.Sprite{
             if(this.y < (game.config.width - (this.displayWidth/2))){
                 this.y == this.shipSpeed;
             }
+        }
+
+        if(this.hp < maxHP){ // visual health update to ship
+            this.stage = Math.trunc((3/maxHP) * this.hp) * 6 + 1;
+            this.setframe(`ship (${this.stage}).png`);
         }
     }
 }

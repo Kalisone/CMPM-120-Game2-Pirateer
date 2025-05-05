@@ -1,10 +1,11 @@
 class EnemyShip extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y, frame, texture) {
         if(!texture) texture = "pirateMisc";
-        if(!frame || frame < 0  || frame > 6) frame = 1;
+        if(!frame) frame = 1;
         
         super(scene, x, y, texture, `ship (${frame}).png`);
 
+        var maxHP = 15;
         this.type = frame;
 
         /* Ship types in base game; HP stages = {3, 2, 1, 0}:
@@ -15,46 +16,51 @@ class EnemyShip extends Phaser.GameObjects.Sprite {
          * {5, 11, 17, 23}: Blue Cavalier; 1 life (3 HP), 4 spd, 1 pt
          * {6, 12, 18, 24}: Yellow Mark; 3 lives (9 HP), 2 spd, 2 pts
         **/
-       switch(this.type){
-        default:
-        case 1: // White Flag
-            this.hp = 6;
-            this.shipSpeed = 1;
-            this.points = 1;
-            break;
-        case 2: // Pirate Ship
-            this.hp = 15;
-            this.shipSpeed = 2;
-            this.points = 0;
-            break;
-        case 3: // Red Cross
-            this.hp = 15;
-            this.shipSpeed = 2;
-            this.points = 3;
-            break;
-        case 4: // Green Sword
-            this.hp = 3;
-            this.shipSpeed = 2;
-            this.points = 1;
-            break;
-        case 5: // Blue Cavalier
-            this.hp = 3;
-            this.shipSpeed = 4;
-            this.points = 1;
-            break;
-        case 6: // Yellow Mark
-            this.hp = 9;
-            this.shipSpeed = 3;
-            this.points = 2;
-            break;
-       }
+
+        switch(this.type){
+            default:
+            case 1: // White Flag
+                maxHP = 6;
+                this.shipSpeed = 1;
+                this.points = 1;
+                break;
+            case 2: // Pirate Ship
+                //maxHP = 15;
+                this.shipSpeed = 2;
+                this.points = 0;
+                break;
+            case 3: // Red Cross
+                //maxHP = 15;
+                this.shipSpeed = 2;
+                this.points = 3;
+                break;
+            case 4: // Green Sword
+                maxHP = 3;
+                this.shipSpeed = 2;
+                this.points = 1;
+                break;
+            case 5: // Blue Cavalier
+                maxHP = 3;
+                this.shipSpeed = 4;
+                this.points = 1;
+                break;
+            case 6: // Yellow Mark
+                maxHP = 9;
+                this.shipSpeed = 3;
+                this.points = 2;
+                break;
+        }
         
+        this.hp = maxHP;
         scene.add.existing(this);
         return this;
     }
 
     update(){
-        
+        if(this.hp < maxHP){ // visual health update to ship
+            this.stage = Math.trunc((3/maxHP) * this.hp) * 6 + 1;
+            this.setframe(`ship (${this.stage}).png`);
+        }
     }
 
 /*
