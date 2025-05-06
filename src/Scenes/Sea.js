@@ -51,8 +51,7 @@ class Sea extends Phaser.Scene {
         this.maxShots = 12, this.reload = 36, this.reloadTimer = 0;
 
         my.sprite.enemies = [];
-        this.maxEnemies = 9 + maxWaves, this.enemyCooldown = 108, this.enemyTimer = 0;
-        this.enemiesDeployed = 0;
+        this.maxEnemies = 9 + maxWaves, this.enemyCooldown = 36, this.enemyTimer = 0, this.enemiesDeployed = 0;
         
         // PLAYER CREATION
         let keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
@@ -103,6 +102,7 @@ class Sea extends Phaser.Scene {
 
         // ENEMY CREATION
         for (let i=0; i<this.maxEnemies; i++){
+            //let shipConfig = shipConfig();
             let rx = game.config.width + my.sprite.pirateShip.displayHeight / 2 + this.randRange(0, game.config.width / 8);
             let ry = this.randRange(my.sprite.pirateShip.displayWidth, game.config.height - my.sprite.pirateShip.displayWidth);
             
@@ -187,9 +187,41 @@ class Sea extends Phaser.Scene {
         }
 
         // WAVES
+        // Deploy Enemy
         if(this.enemyTimer-- <= 0 && this.enemiesDeployed < this.maxEnemies){
             my.sprite.enemies[this.enemiesDeployed++].activate();
             this.enemyTimer = this.enemyCooldown;
+        }
+
+        // Deploy New Wave
+        if(this.enemiesDeployed >= this.maxEnemies){
+            let waveEnd = true;
+
+            for(let ship in my.sprite.enemies){
+                if(ship.x > 1-ship.displayHeight/2 && !ship.destroyed){
+                    waveEnd = false;
+                }
+            }
+
+            console.log(waveEnd);
+
+            if(waveEnd){
+                for(let ship of my.sprite.enemies){
+                    ship.deactivate();
+
+                    let rx = game.config.width + my.sprite.pirateShip.displayHeight / 2 + this.randRange(0, game.config.width / 8);
+                    let ry = this.randRange(my.sprite.pirateShip.displayWidth, game.config.height - my.sprite.pirateShip.displayWidth);
+                    
+                    let type = [1, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6];
+                    type = type[this.randRange(0, type.length-1)]
+
+                    ship.x = rx, ship.y = ry, ship.type = type;
+                    ship.activate();
+                }
+
+                this.enemiesDeployed = 0;
+
+            }
         }
     }
 

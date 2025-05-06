@@ -85,12 +85,48 @@ class EnemyShip extends Phaser.GameObjects.Sprite {
         this.active = true;
         this.visible = true;
         this.destroyed = false;
+
+        switch(this.type){
+            default:
+            case 1: // White Flag
+                this.hp = 6;
+                this.shipSpeed = 1;
+                this.points = 1;
+                break;
+            case 2: // Pirate Ship
+                this.hp = 15;
+                this.shipSpeed = 2;
+                this.points = 0;
+                break;
+            case 3: // Red Cross
+                this.hp = 15;
+                this.shipSpeed = 2;
+                this.points = 3;
+                break;
+            case 4: // Green Sword
+                this.hp = 3;
+                this.shipSpeed = 2;
+                this.points = 1;
+                break;
+            case 5: // Blue Cavalier
+                this.hp = 3;
+                this.shipSpeed = 4;
+                this.points = 1;
+                break;
+            case 6: // Yellow Mark
+                this.hp = 9;
+                this.shipSpeed = 2;
+                this.points = 2;
+                this.maxDY = 100
+                break;
+        }
+        
+        this.hp = this.maxHP;
     }
 
     deactivate(){
         this.active = false;
         this.visible = false;
-        this.destroyed = true;
     }
 
 /*
