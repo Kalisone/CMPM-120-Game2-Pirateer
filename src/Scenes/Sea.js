@@ -6,7 +6,7 @@ class Sea extends Phaser.Scene {
         this.playerX_OG = 100;
         this.playerY_OG = game.config.height / 2;
 
-        this.score = 0;
+        this.score = 0, this.shipScale = 0.6;
     }
 
     preload() {
@@ -44,6 +44,7 @@ class Sea extends Phaser.Scene {
 
         // Sea scene variables
         let my = this.my;
+        my.sprite.shipTemplate = this.add.sprite(-100, -100, "pirateMisc", "ship (1).png");
 
         this.wave = 1;
 
@@ -58,7 +59,7 @@ class Sea extends Phaser.Scene {
         let keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
-        my.sprite.pirateShip = new PlayerShip(this, this.playerX_OG, this.playerY_OG, keyW, keyS).setScale(0.6).setAngle(270);
+        my.sprite.pirateShip = new PlayerShip(this, this.playerX_OG, this.playerY_OG, keyW, keyS).setScale(this.shipScale).setAngle(270);
 
         // Pirate Ship Cannon Shots
         for(let i = 0; i < this.maxShots; i++){
@@ -101,16 +102,7 @@ class Sea extends Phaser.Scene {
         });
 
         // ENEMY CREATION
-        for (let i=0; i<this.maxEnemies; i++){
-            //let shipConfig = shipConfig();
-            let rx = game.config.width + my.sprite.pirateShip.displayHeight / 2 + this.randRange(0, game.config.width / 8);
-            let ry = this.randRange(my.sprite.pirateShip.displayWidth, game.config.height - my.sprite.pirateShip.displayWidth);
-            
-            let type = [1, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6];
-            type = type[this.randRange(0, type.length-1)]
-
-            my.sprite.enemies.push(new EnemyShip(this, rx, ry, type).setScale(0.6).setAngle(90));
-        }
+        this.createEnemies(my.sprite.shipTemplate);
     }
 
     update(){
@@ -198,7 +190,7 @@ class Sea extends Phaser.Scene {
             let waveEnd = true;
 
             for(let ship in my.sprite.enemies){
-                if(ship.x > 1-ship.displayHeight/2 && !ship.destroyed){
+                if(ship.x > 1-(ship.displayHeight/2) && !ship.destroyed){
                     waveEnd = false;
                 }
             }
@@ -206,6 +198,8 @@ class Sea extends Phaser.Scene {
             console.log(waveEnd);
 
             if(waveEnd){
+                this.enemiesDeployed = 0;
+
                 for(let ship of my.sprite.enemies){
                     ship.deactivate();
 
@@ -219,13 +213,25 @@ class Sea extends Phaser.Scene {
                     ship.activate();
                 }
 
-                this.enemiesDeployed = 0;
-
             }
         }
     }
 
     // HELPER FUNCTIONS
+    createEnemies(shipTemplate){
+        let my = this.my;
+        for (let i=my.sprite.enemies.length; i<this.maxEnemies; i++){
+            //let shipConfig = shipConfig();
+            let rx = game.config.width + shipTemplate.displayHeight / 2 + this.randRange(0, game.config.width / 8);
+            let ry = this.randRange(shipTemplate.displayWidth, game.config.height - shipTemplate.displayWidth);
+            
+            let type = [1, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6];
+            type = type[this.randRange(0, type.length-1)]
+
+            my.sprite.enemies.push(new EnemyShip(this, rx, ry, type).setScale(this.shipScale).setAngle(90));
+        }
+    }
+
     randRange(min, max){
         return Math.round(Math.random() * (max - min) + min);
     }

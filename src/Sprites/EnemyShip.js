@@ -120,8 +120,8 @@ class EnemyShip extends Phaser.GameObjects.Sprite {
                 this.maxDY = 100
                 break;
         }
-        
-        this.hp = this.maxHP;
+
+        this.maxHP = this.hp;
     }
 
     deactivate(){
