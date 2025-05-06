@@ -45,13 +45,13 @@ class Sea extends Phaser.Scene {
         // Sea scene variables
         let my = this.my;
 
+        this.wave = 1;
+
         my.sprite.shots = [];
         this.maxShots = 12, this.reload = 36, this.reloadTimer = 0;
 
         my.sprite.enemies = [];
-        this.maxEnemies = 9 + maxWaves, this.enemyCooldown = 144, this.enemyTimer = 0;
-
-        this.wave = 1, this.waveTimer = 0;
+        this.maxEnemies = 9 + maxWaves, this.enemyCooldown = 108, this.enemyTimer = 0;
         
         // PLAYER CREATION
         let keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
@@ -101,8 +101,13 @@ class Sea extends Phaser.Scene {
 
         // ENEMY CREATION
         for (let i=0; i<this.maxEnemies; i++){
-            my.sprite.enemies.push(new EnemyShip(this, -100, -100).setScale(0.6).setAngle(90));
-            this.resetWave();
+            let rx = game.config.width + my.sprite.pirateShip.displayHeight / 2 + this.randRange(0, game.config.width / 8);
+            let ry = this.randRange(my.sprite.pirateShip.displayWidth, game.config.height - my.sprite.pirateShip.displayWidth);
+            
+            let type = [1, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6];
+            type = type[this.randRange(0, type.length-1)]
+
+            my.sprite.enemies.push(new EnemyShip(this, rx, ry, type).setScale(0.6).setAngle(90));
         }
     }
 
@@ -180,13 +185,7 @@ class Sea extends Phaser.Scene {
         }
 
         // WAVES
-        if(this.waveTimer-- <= 0){
-            this.resetWave();
-            this.waveTimer = this.enemyCooldown * ++this.maxEnemies;
-        }
-
-        if(this.wave++ <= maxWaves){
-            // Wave
+        if(this.wave <= maxWaves){
             if(this.enemyTimer-- <= 0){
                 for(let ship of my.sprite.enemies){
                     if(!ship.active){
@@ -197,29 +196,9 @@ class Sea extends Phaser.Scene {
                 }
             }
         }
-
-
-        console.log(this.waveTimer);
     }
 
     // HELPER FUNCTIONS
-    resetWave(){
-        let my = this.my;
-        for(let ship of my.sprite.enemies){
-            ship.deactivate();
-
-            let rx = game.config.width + my.sprite.pirateShip.displayHeight / 2 + this.randRange(0, game.config.width / 8);
-            let ry = this.randRange(my.sprite.pirateShip.displayWidth, game.config.height - my.sprite.pirateShip.displayWidth);
-            
-            let type = [1, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6];
-            type = type[this.randRange(0, type.length-1)];
-
-            ship.type = type;
-            ship.setX(rx);
-            ship.setY(ry);
-        }
-    }
-
     randRange(min, max){
         return Math.round(Math.random() * (max - min) + min);
     }
