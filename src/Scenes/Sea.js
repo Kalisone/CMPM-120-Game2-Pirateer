@@ -1,3 +1,5 @@
+const shipTypes = [0, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5];
+
 class Sea extends Phaser.Scene {
     constructor() {
         super("sea"); // super({ key: 'Sea' });
@@ -195,8 +197,6 @@ class Sea extends Phaser.Scene {
                 }
             }
 
-            console.log(waveEnd);
-
             if(waveEnd){
                 this.enemiesDeployed = 0;
 
@@ -205,11 +205,10 @@ class Sea extends Phaser.Scene {
 
                     let rx = game.config.width + my.sprite.pirateShip.displayHeight / 2 + this.randRange(0, game.config.width / 8);
                     let ry = this.randRange(my.sprite.pirateShip.displayWidth, game.config.height - my.sprite.pirateShip.displayWidth);
-                    
-                    let type = [1, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6];
-                    type = type[this.randRange(0, type.length-1)]
 
-                    ship.x = rx, ship.y = ry, ship.type = type;
+                    let type = shipTypes[this.randRange(0, shipTypes.length-1)];
+
+                    ship.reset(rx, ry, type);
                     ship.activate();
                 }
 
@@ -224,9 +223,8 @@ class Sea extends Phaser.Scene {
             //let shipConfig = shipConfig();
             let rx = game.config.width + shipTemplate.displayHeight / 2 + this.randRange(0, game.config.width / 8);
             let ry = this.randRange(shipTemplate.displayWidth, game.config.height - shipTemplate.displayWidth);
-            
-            let type = [1, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6];
-            type = type[this.randRange(0, type.length-1)]
+
+            let type = shipTypes[this.randRange(0, shipTypes.length-1)];
 
             my.sprite.enemies.push(new EnemyShip(this, rx, ry, type).setScale(this.shipScale).setAngle(90));
         }

@@ -1,58 +1,20 @@
+const typeChart = [
+    ["ship (1).png", "ship (7).png", "ship (13).png", "ship (19).png"],
+    ["ship (2).png", "ship (8).png", "ship (14).png", "ship (20).png"],
+    ["ship (3).png", "ship (9).png", "ship (15).png", "ship (21).png"],
+    ["ship (4).png", "ship (10).png", "ship (16).png", "ship (22).png"],
+    ["ship (5).png", "ship (11).png", "ship (17).png", "ship (23).png"],
+    ["ship (6).png", "ship (12).png", "ship (18).png", "ship (24).png"]
+];
+
 class EnemyShip extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y, frame, texture) {
         if(!texture) texture = "pirateMisc";
-        let frameNum = (frame ? frame : 1);
+        if(!frame) frame = 0;
         
-        super(scene, x, y, texture, `ship (${frameNum}).png`);
-        
-        this.type = frame;
-        this.active = false, this.visible = false, this.destroyed = false;
+        super(scene, x, y, texture, typeChart[frame][0]);
 
-        /* Ship types in base game; HP stages = {3, 2, 1, 0}:
-         * {1, 7, 13, 19}: White Flag; 2 lives (6 HP), 1 spd, 1 pt
-         * {2, 8, 14, 20}: Pirate Ship; 5 lives (15 HP), 2 spd, 0 pts
-         * {3, 9, 15, 21}: Red Cross; 5 lives (15 HP), 2 spd, 3 pts
-         * {4, 10, 16, 22}: Green Sword; 1 life (3 HP), 2 spd, 1 pt
-         * {5, 11, 17, 23}: Blue Cavalier; 1 life (3 HP), 4 spd, 1 pt
-         * {6, 12, 18, 24}: Yellow Mark; 3 lives (9 HP), 2 spd, 2 pts
-        **/
-
-        switch(this.type){
-            default:
-            case 1: // White Flag
-                this.hp = 6;
-                this.shipSpeed = 1;
-                this.points = 1;
-                break;
-            case 2: // Pirate Ship
-                this.hp = 15;
-                this.shipSpeed = 2;
-                this.points = 0;
-                break;
-            case 3: // Red Cross
-                this.hp = 15;
-                this.shipSpeed = 2;
-                this.points = 3;
-                break;
-            case 4: // Green Sword
-                this.hp = 3;
-                this.shipSpeed = 2;
-                this.points = 1;
-                break;
-            case 5: // Blue Cavalier
-                this.hp = 3;
-                this.shipSpeed = 4;
-                this.points = 1;
-                break;
-            case 6: // Yellow Mark
-                this.hp = 9;
-                this.shipSpeed = 2;
-                this.points = 2;
-                this.maxDY = 100
-                break;
-        }
-        
-        this.maxHP = this.hp;
+        this.reset(x, y, frame);
 
         scene.add.existing(this);
         return this;
@@ -62,8 +24,9 @@ class EnemyShip extends Phaser.GameObjects.Sprite {
         if(this.active){
             // HEALTH
             if(this.hp < this.maxHP && !this.destroyed){ // diegetic health indicator
-                let stage = Math.trunc((-2 / this.maxHP) * this.hp + 2) + 1;
-                this.setFrame(`ship (${6 * stage + this.type}).png`);
+                let stage = Math.floor((-2 / this.maxHP) * this.hp + 2) + 1;
+
+                this.setFrame(typeChart[this.type][stage]);
             }
 
             if(this.hp <= 0){
@@ -81,39 +44,48 @@ class EnemyShip extends Phaser.GameObjects.Sprite {
         }
     }
 
-    activate(){
-        this.active = true;
-        this.visible = true;
-        this.destroyed = false;
+    reset(x, y, type){
+        this.active = false, this.visible = false, this.destroyed = false;
+
+        /* Ship types in base game:
+         * [0] {1, 7, 13, 19}: White Flag; 2 lives (6 HP), 1 spd, 1 pt
+         * [1] {2, 8, 14, 20}: Pirate Ship; 5 lives (15 HP), 2 spd, 0 pts
+         * [2] {3, 9, 15, 21}: Red Cross; 5 lives (15 HP), 2 spd, 3 pts
+         * [3] {4, 10, 16, 22}: Green Sword; 1 life (3 HP), 2 spd, 1 pt
+         * [4] {5, 11, 17, 23}: Blue Cavalier; 1 life (3 HP), 4 spd, 1 pt
+         * [5] {6, 12, 18, 24}: Yellow Mark; 3 lives (9 HP), 2 spd, 2 pts
+        **/
+
+        this.x = x, this.y = y, this.type = type;
 
         switch(this.type){
             default:
-            case 1: // White Flag
+            case 0: // White Flag
                 this.hp = 6;
                 this.shipSpeed = 1;
                 this.points = 1;
                 break;
-            case 2: // Pirate Ship
+            case 1: // Pirate Ship
                 this.hp = 15;
                 this.shipSpeed = 2;
                 this.points = 0;
                 break;
-            case 3: // Red Cross
+            case 2: // Red Cross
                 this.hp = 15;
                 this.shipSpeed = 2;
                 this.points = 3;
                 break;
-            case 4: // Green Sword
+            case 3: // Green Sword
                 this.hp = 3;
                 this.shipSpeed = 2;
                 this.points = 1;
                 break;
-            case 5: // Blue Cavalier
+            case 4: // Blue Cavalier
                 this.hp = 3;
                 this.shipSpeed = 4;
                 this.points = 1;
                 break;
-            case 6: // Yellow Mark
+            case 5: // Yellow Mark
                 this.hp = 9;
                 this.shipSpeed = 2;
                 this.points = 2;
@@ -122,11 +94,16 @@ class EnemyShip extends Phaser.GameObjects.Sprite {
         }
 
         this.maxHP = this.hp;
+
+        this.setFrame(typeChart[this.type][0]);
+    }
+
+    activate(){
+        this.active = true, this.visible = true, this.destroyed = false;
     }
 
     deactivate(){
-        this.active = false;
-        this.visible = false;
+        this.active = false, this.visible = false;
     }
 
 /*
