@@ -52,6 +52,7 @@ class Sea extends Phaser.Scene {
 
         my.sprite.enemies = [];
         this.maxEnemies = 9 + maxWaves, this.enemyCooldown = 108, this.enemyTimer = 0;
+        this.enemiesDeployed = 0;
         
         // PLAYER CREATION
         let keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
@@ -83,6 +84,7 @@ class Sea extends Phaser.Scene {
             hideOnComplete: true
         });
 
+        // Pirate Ship Hit Smoke
         this.anims.create({
             key: "hitSmoke",
             frames: [
@@ -185,16 +187,9 @@ class Sea extends Phaser.Scene {
         }
 
         // WAVES
-        if(this.wave <= maxWaves){
-            if(this.enemyTimer-- <= 0){
-                for(let ship of my.sprite.enemies){
-                    if(!ship.active){
-                        ship.activate();
-                        this.enemyTimer = this.enemyCooldown;
-                        break;
-                    }
-                }
-            }
+        if(this.enemyTimer-- <= 0 && this.enemiesDeployed < this.maxEnemies){
+            my.sprite.enemies[this.enemiesDeployed++].activate();
+            this.enemyTimer = this.enemyCooldown;
         }
     }
 
