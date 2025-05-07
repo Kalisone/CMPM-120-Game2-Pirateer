@@ -131,12 +131,13 @@ class Sea extends Phaser.Scene {
         let my = this.my;
 
         // PIRATE UPDATES
+        let player = my.sprite.pirateShip;
         // Cannon Fire
-        if(!my.sprite.pirateShip.destroyed && this.reloadTimer-- <= 0 && this.keySpace.isDown) {
+        if(!player.destroyed && this.reloadTimer-- <= 0 && this.keySpace.isDown) {
             for(let shot of my.sprite.shots){
                 if(!shot.active){
-                    shot.x = my.sprite.pirateShip.x + (shot.displayWidth / 2);
-                    shot.y = my.sprite.pirateShip.y;
+                    shot.x = player.x + (shot.displayWidth / 2);
+                    shot.y = player.y;
                     shot.activate()
 
                     this.reloadTimer = this.reload;
@@ -145,27 +146,25 @@ class Sea extends Phaser.Scene {
             }
 
             // Gun Smoke
-            this.add.sprite(my.sprite.pirateShip.x + (my.sprite.pirateShip.displayHeight/3), my.sprite.pirateShip.y).setScale(0.6).play("gunSmoke");
+            this.add.sprite(player.x + (player.displayHeight/3), player.y).setScale(0.6).play("gunSmoke");
 
             this.sound.play("cannonFire");
-
-            my.sprite.pirateShip.hp--;
         }
 
         // Player Health
         for(let i = my.sprite.playerHP.length-1; i >= 0; i--){
-            if(i*my.sprite.shots[0].shotDmg+1 > my.sprite.pirateShip.hp){
+            if(i*my.sprite.shots[0].shotDmg+1 > player.hp){
                 my.sprite.playerHP[i].visible = false;
             }
         }
 
 /*
         // Player destruction
-        if(my.sprite.pirateShip.destroyed){
+        if(player.destroyed){
 
         }
 */
-        my.sprite.pirateShip.update();
+        player.update();
 
         // SHOT UPDATES
         for(let shot of my.sprite.shots){
@@ -182,6 +181,7 @@ class Sea extends Phaser.Scene {
                     // Hit Animation
                     this.hitSmoke = this.add.sprite(shot.x, shot.y).setScale(0.6).play("hitSmoke");
                     
+                    ship.hp -= shot.shotDmg;
                     shot.deactivate();
 
                     // Death Animations & sounds
@@ -196,7 +196,7 @@ class Sea extends Phaser.Scene {
             }
 
             // Collision detection + handling w/ player
-            if(!my.sprite.pirateShip.destroyed && this.collides(ship, my.sprite.pirateShip)){
+            if(!player.destroyed && this.collides(ship, player)){
                 if(!ship.destroyed){
                     this.destroyedSmoke = this.add.sprite(ship.x, ship.y).play("hitSmoke");
                 }else{
@@ -204,10 +204,10 @@ class Sea extends Phaser.Scene {
                 }
 
                 ship.hp = 0;
-                my.sprite.pirateShip.hp = 0;
+                player.hp = 0;
 
                 // Animations & sounds
-                this.playerSmoke = this.add.sprite(my.sprite.pirateShip.x, my.sprite.pirateShip.y).play("gunSmoke");
+                this.playerSmoke = this.add.sprite(player.x, player.y).play("gunSmoke");
 
                 this.sound.play("playerHit");
                 this.sound.play("shipSunk");
@@ -215,7 +215,7 @@ class Sea extends Phaser.Scene {
         }
 
         // WAVES
-        if(this.enemiesDeployed >= this.maxEnemies && this.wave <= maxWaves && !my.sprite.pirateShip.destroyed){
+        if(this.enemiesDeployed >= this.maxEnemies && this.wave <= maxWaves && !player.destroyed){
             // Check if all enemies have been destroyed
             let waveEnd = true;
 
@@ -232,8 +232,8 @@ class Sea extends Phaser.Scene {
                 for(let ship of my.sprite.enemies){
                     ship.deactivate();
 
-                    let rx = game.config.width + my.sprite.pirateShip.displayHeight / 2 + this.randRange(0, game.config.width / 8);
-                    let ry = this.randRange(my.sprite.pirateShip.displayWidth, game.config.height - my.sprite.pirateShip.displayWidth);
+                    let rx = game.config.width + player.displayHeight / 2 + this.randRange(0, game.config.width / 8);
+                    let ry = this.randRange(player.displayWidth, game.config.height - player.displayWidth);
 
                     let type = shipTypes[this.randRange(0, shipTypes.length-1)];
 
