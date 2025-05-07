@@ -68,7 +68,8 @@ class Sea extends Phaser.Scene {
         this.maxShots = 12, this.reload = 36, this.reloadTimer = 0;
 
         my.sprite.enemies = [];
-        this.maxEnemies = 9 + 3 /*+ maxWaves*/, this.enemyCooldown = 36, this.enemyTimer = 0, this.enemiesDeployed = this.maxEnemies;
+        // this.maxEnemies & this.enemiesDeployed decremented immediately b/c incremented before first wave
+        this.maxEnemies = 9 + 3 /*+ maxWaves*/, this.enemyCooldown = 36, this.enemyTimer = 0, this.enemiesDeployed = --this.maxEnemies;
 
         // ENEMY CREATION
         this.createEnemies(my.sprite.shipTemplate);
@@ -227,8 +228,8 @@ class Sea extends Phaser.Scene {
 
             // Deploy Wave
             if(waveEnd){
-                this.enemiesDeployed = 0, this.maxEnemies++;
-
+                this.enemiesDeployed = 0, this.maxEnemies++, this.wave++;
+                
                 for(let ship of my.sprite.enemies){
                     ship.deactivate();
 
@@ -239,7 +240,7 @@ class Sea extends Phaser.Scene {
 
                     ship.reset(rx, ry, type);
                 }
-                this.wave++;
+                
                 this.createEnemies(my.sprite.shipTemplate);
             }
         }
