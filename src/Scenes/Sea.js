@@ -147,6 +147,8 @@ class Sea extends Phaser.Scene {
             this.add.sprite(my.sprite.pirateShip.x + (my.sprite.pirateShip.displayHeight/3), my.sprite.pirateShip.y).setScale(0.6).play("gunSmoke");
 
             this.sound.play("cannonFire");
+
+            my.sprite.pirateShip.hp--;
         }
 
         // Player Health

@@ -1,12 +1,3 @@
-const typeChart = [
-    ["ship (1).png", "ship (7).png", "ship (13).png", "ship (19).png"],
-    ["ship (2).png", "ship (8).png", "ship (14).png", "ship (20).png"],
-    ["ship (3).png", "ship (9).png", "ship (15).png", "ship (21).png"],
-    ["ship (4).png", "ship (10).png", "ship (16).png", "ship (22).png"],
-    ["ship (5).png", "ship (11).png", "ship (17).png", "ship (23).png"],
-    ["ship (6).png", "ship (12).png", "ship (18).png", "ship (24).png"]
-];
-
 class EnemyShip extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y, frame, texture) {
         if(!texture) texture = "pirateMisc";

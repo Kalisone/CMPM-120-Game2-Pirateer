@@ -32,9 +32,9 @@ class PlayerShip extends Phaser.GameObjects.Sprite{
             }
 
             // HEALTH
-            if(this.hp < this.maxHP){ // diegetic health indicator
-                let stage = Math.trunc((-2 / this.maxHP) * this.hp + 2) + 1;
-                this.setFrame(`ship (${6 * stage + this.type}).png`);
+            if(this.hp < this.maxHP && !this.destroyed){ // diegetic health indicator
+                let stage = Math.floor((-2 / this.maxHP) * this.hp + 2) + 1;
+                this.setFrame(typeChart[1][stage]);
             }
         }
 
