@@ -14,12 +14,11 @@ class Sea extends Phaser.Scene {
     preload() {
         this.load.setPath("./assets/");
 
-
         // Sprites
         this.load.atlasXML("pirateMisc", "piratePack_ships_spritesheet.png", "piratePack_ships_spritesheet.xml");
         this.load.atlasXML("tanks", "tanks_spritesheet.png", "tanks_spritesheet.xml");
 
-        this.load.image("pirateerTiles", "piratePack_tilesheet.png");
+        this.load.image("pirateTiles", "piratePack_tilesheet.png");
         this.load.tilemapTiledJSON("map", "PirateerSeaMap.json")
 
         // Sound Effects
@@ -49,10 +48,10 @@ class Sea extends Phaser.Scene {
 
         // Tilemap
         this.map = this.add.tilemap("map", 30, 30, 40, 20);
-        this.tileset = this.map.addTilesetImage("pirateer-sea-tileset", "pirateerTiles");
+        this.tileset = this.map.addTilesetImage("pirateer-sea", "pirateTiles");
 
-        this.layerSeaBase = this.map.createLayer("SeaBase", this.tileset, 0, 0);
-        this.layerSeaWaves = this.map.createLayer("SeaWaves", this.tileset, 0, 0);
+        this.layerSeaBase = this.map.createLayer("Sea-Base", this.tileset, 0, 0);
+        this.layerSeaWaves = this.map.createLayer("Sea-Waves", this.tileset, 0, 0);
 
         // Sea scene variables
         let my = this.my;
