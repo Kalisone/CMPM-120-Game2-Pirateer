@@ -192,7 +192,8 @@ class Sea extends Phaser.Scene {
             }
 
             // Deploy Wave
-            if(waveEnd && ++this.wave <= this.maxWaves){
+            console.log(this.wave, maxWaves);
+            if(waveEnd && this.wave <= maxWaves){
                 this.enemiesDeployed = 0, this.maxEnemies++;
 
                 for(let ship of my.sprite.enemies){
@@ -205,6 +206,8 @@ class Sea extends Phaser.Scene {
 
                     ship.reset(rx, ry, type);
                 }
+                this.wave++;
+                this.createEnemies(my.sprite.shipTemplate);
             }
         }
 
