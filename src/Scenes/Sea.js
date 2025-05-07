@@ -74,6 +74,7 @@ class Sea extends Phaser.Scene {
         let keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         let keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        this.keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
 
         my.sprite.pirateShip = new PlayerShip(this, this.playerX_OG, this.playerY_OG, keyW, keyS).setScale(this.shipScale).setAngle(270);
 
@@ -180,8 +181,7 @@ class Sea extends Phaser.Scene {
                 if(!ship.destroyed && this.collides(ship, shot)){
                     // Hit Animation
                     this.hitSmoke = this.add.sprite(shot.x, shot.y).setScale(0.6).play("hitSmoke");
-
-                    ship.hp -= shot.shotDmg;
+                    
                     shot.deactivate();
 
                     // Death Animations & sounds
@@ -215,7 +215,7 @@ class Sea extends Phaser.Scene {
         }
 
         // WAVES
-        if(this.enemiesDeployed >= this.maxEnemies && this.wave <= maxWaves){
+        if(this.enemiesDeployed >= this.maxEnemies && this.wave <= maxWaves && !my.sprite.pirateShip.destroyed){
             // Check if all enemies have been destroyed
             let waveEnd = true;
 
