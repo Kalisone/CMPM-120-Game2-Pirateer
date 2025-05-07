@@ -54,7 +54,7 @@ class Sea extends Phaser.Scene {
         this.maxShots = 12, this.reload = 36, this.reloadTimer = 0;
 
         my.sprite.enemies = [];
-        this.maxEnemies = 9 + maxWaves, this.enemyCooldown = 36, this.enemyTimer = 0, this.enemiesDeployed = 0;
+        this.maxEnemies = 9 + maxWaves, this.enemyCooldown = 36, this.enemyTimer = 0, this.enemiesDeployed = this.maxEnemies;
         
         // PLAYER CREATION
         let keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
@@ -181,22 +181,17 @@ class Sea extends Phaser.Scene {
         }
 
         // WAVES
-        // Deploy Enemy
-        if(this.enemyTimer-- <= 0 && this.enemiesDeployed < this.maxEnemies){
-            my.sprite.enemies[this.enemiesDeployed++].activate();
-            this.enemyTimer = this.enemyCooldown;
-        }
-
-        // Deploy New Wave
         if(this.enemiesDeployed >= this.maxEnemies){
+            // Check if all enemies have been destroyed
             let waveEnd = true;
 
-            for(let ship in my.sprite.enemies){
-                if(ship.x > 1-(ship.displayHeight/2) && !ship.destroyed){
+            for(let ship of my.sprite.enemies){
+                if(ship.active){
                     waveEnd = false;
                 }
             }
 
+            // Deploy Wave
             if(waveEnd){
                 this.enemiesDeployed = 0;
 
@@ -209,10 +204,14 @@ class Sea extends Phaser.Scene {
                     let type = shipTypes[this.randRange(0, shipTypes.length-1)];
 
                     ship.reset(rx, ry, type);
-                    ship.activate();
                 }
-
             }
+        }
+
+        // Deploy Enemy
+        if(--this.enemyTimer <= 0 && this.enemiesDeployed < this.maxEnemies){
+            my.sprite.enemies[this.enemiesDeployed++].activate();
+            this.enemyTimer = this.enemyCooldown;
         }
     }
 
