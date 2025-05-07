@@ -192,8 +192,8 @@ class Sea extends Phaser.Scene {
             }
 
             // Deploy Wave
-            if(waveEnd){
-                this.enemiesDeployed = 0;
+            if(waveEnd && ++this.wave <= this.maxWaves){
+                this.enemiesDeployed = 0, this.maxEnemies++;
 
                 for(let ship of my.sprite.enemies){
                     ship.deactivate();
