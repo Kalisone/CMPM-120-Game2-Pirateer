@@ -36,9 +36,8 @@ let config = {
     }
 }
 
-// Global variable to hold sprites
-var my = {sprite: {}};
-var maxWaves = 3, totalScore = 0;
+// Global variables; maxWaves for if future development
+var maxWaves = Infinity, totalScore = 0;
 
 const game = new Phaser.Game(config);
 

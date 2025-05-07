@@ -68,7 +68,10 @@ class Sea extends Phaser.Scene {
         this.maxShots = 12, this.reload = 36, this.reloadTimer = 0;
 
         my.sprite.enemies = [];
-        this.maxEnemies = 9 + maxWaves, this.enemyCooldown = 36, this.enemyTimer = 0, this.enemiesDeployed = this.maxEnemies;
+        this.maxEnemies = 9 + 3 /*+ maxWaves*/, this.enemyCooldown = 36, this.enemyTimer = 0, this.enemiesDeployed = this.maxEnemies;
+
+        // ENEMY CREATION
+        this.createEnemies(my.sprite.shipTemplate);
         
         // PLAYER CREATION
         let keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
@@ -122,9 +125,6 @@ class Sea extends Phaser.Scene {
         for(let i = 0; i < my.sprite.pirateShip.hp / my.sprite.shots[0].shotDmg; i++){
             my.sprite.playerHP.push(this.add.sprite((i+1)*(my.sprite.healthTemplate.displayWidth*1.5), my.sprite.healthTemplate.displayHeight, "skullCrossbones").setScale(0.05));
         }
-
-        // ENEMY CREATION
-        this.createEnemies(my.sprite.shipTemplate);
     }
 
     update(){
