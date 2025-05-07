@@ -17,6 +17,7 @@ class Sea extends Phaser.Scene {
         // Sprites
         this.load.atlasXML("pirateMisc", "piratePack_ships_spritesheet.png", "piratePack_ships_spritesheet.xml");
         this.load.atlasXML("tanks", "tanks_spritesheet.png", "tanks_spritesheet.xml");
+        this.load.image("skullCrossbones", "skull_crossbones.png");
 
         this.load.image("pirateTiles", "piratePack_tilesheet.png");
         this.load.tilemapTiledJSON("map", "PirateerSeaMap.json")
@@ -56,8 +57,12 @@ class Sea extends Phaser.Scene {
         // Sea scene variables
         let my = this.my;
         my.sprite.shipTemplate = this.add.sprite(-100, -100, "pirateMisc", "ship (1).png");
+        my.sprite.shipTemplate.visible = false;
+        my.sprite.healthTemplate = this.add.sprite(-100, -100, "skullCrossbones").setScale(0.05);
 
         this.wave = 1;
+
+        my.sprite.playerHP = [];
 
         my.sprite.shots = [];
         this.maxShots = 12, this.reload = 36, this.reloadTimer = 0;
@@ -112,6 +117,11 @@ class Sea extends Phaser.Scene {
             hideOnComplete: true
         });
 
+        // Pirate Ship Health
+        for(let i = 0; i < my.sprite.pirateShip.hp / my.sprite.shots[0].shotDmg; i++){
+            my.sprite.playerHP.push(this.add.sprite((i+1)*(my.sprite.healthTemplate.displayWidth*1.5), my.sprite.healthTemplate.displayHeight, "skullCrossbones").setScale(0.05));
+        }
+
         // ENEMY CREATION
         this.createEnemies(my.sprite.shipTemplate);
     }
@@ -138,6 +148,14 @@ class Sea extends Phaser.Scene {
 
             this.sound.play("cannonFire");
         }
+
+        // Player Health
+        for(let i = my.sprite.playerHP.length-1; i >= 0; i--){
+            if(my.sprite.pirateShip.hp < my.sprite.pirateShip.maxHP/my.sprite.shots[0].shotDmg){
+                my.sprite.playerHP[i].visible = false;
+            }
+        }
+
 /*
         // Player destruction
         if(my.sprite.pirateShip.destroyed){
@@ -195,7 +213,7 @@ class Sea extends Phaser.Scene {
         }
 
         // WAVES
-        if(this.enemiesDeployed >= this.maxEnemies){
+        if(this.enemiesDeployed >= this.maxEnemies && this.wave <= maxWaves){
             // Check if all enemies have been destroyed
             let waveEnd = true;
 
@@ -206,8 +224,7 @@ class Sea extends Phaser.Scene {
             }
 
             // Deploy Wave
-            console.log(this.wave, maxWaves);
-            if(waveEnd && this.wave <= maxWaves){
+            if(waveEnd){
                 this.enemiesDeployed = 0, this.maxEnemies++;
 
                 for(let ship of my.sprite.enemies){
