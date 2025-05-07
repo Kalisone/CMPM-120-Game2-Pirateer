@@ -45,7 +45,7 @@ class Sea extends Phaser.Scene {
 
         waterRush.play({loop: true, volume: 0.5});
         windAmbience.play({loop: true, volume: 0.5});
-        //music.play({loop: true, volume: 0.5});
+        music.play({loop: true, volume: 0.5});
 
         // Tilemap
         this.map = this.add.tilemap("map", 30, 30, 40, 20);
@@ -78,7 +78,7 @@ class Sea extends Phaser.Scene {
         let keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         let keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-        this.keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
+        this.keyP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
 
         my.sprite.pirateShip = new PlayerShip(this, this.playerX_OG, this.playerY_OG, keyW, keyS).setScale(this.shipScale).setAngle(270);
 
@@ -250,7 +250,11 @@ class Sea extends Phaser.Scene {
             my.sprite.enemies[this.enemiesDeployed++].activate();
             this.enemyTimer = this.enemyCooldown;
         }
-    }
+
+        if(Phaser.Input.Keyboard.JustDown(this.keyP)){
+            this.scene.start("sea");
+        }
+    } // End update()
 
     // HELPER FUNCTIONS
     createEnemies(shipTemplate){
