@@ -5,6 +5,13 @@ class EnemyShip extends Phaser.GameObjects.Sprite {
         
         super(scene, x, y, texture, typeChart[frame][0]);
 
+        this.shots = [];
+        this.maxShots = 12, this.reload = 48, this.reloadTimer = 0;
+
+        for(let i = 0; i < this.maxShots; i++){
+            this.shots.push(new Shot(this, -100, -100));
+        }
+
         this.reset(x, y, frame);
 
         scene.add.existing(this);
