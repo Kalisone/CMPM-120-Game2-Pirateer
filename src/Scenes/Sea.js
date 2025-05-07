@@ -153,7 +153,7 @@ class Sea extends Phaser.Scene {
 
         // Player Health
         for(let i = my.sprite.playerHP.length-1; i >= 0; i--){
-            if(my.sprite.pirateShip.hp < my.sprite.pirateShip.maxHP/my.sprite.shots[0].shotDmg){
+            if(i*my.sprite.shots[0].shotDmg+1 > my.sprite.pirateShip.hp){
                 my.sprite.playerHP[i].visible = false;
             }
         }
