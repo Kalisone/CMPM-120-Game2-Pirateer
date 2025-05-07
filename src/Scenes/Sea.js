@@ -2,7 +2,7 @@ const shipTypes = [0, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5];
 
 class Sea extends Phaser.Scene {
     constructor() {
-        super("sea"); // super({ key: 'Sea' });
+        super("sea");
         this.my = {sprite: {}, text: {}};
 
         this.playerX_OG = 100;
@@ -14,10 +14,13 @@ class Sea extends Phaser.Scene {
     preload() {
         this.load.setPath("./assets/");
 
+
         // Sprites
         this.load.atlasXML("pirateMisc", "piratePack_ships_spritesheet.png", "piratePack_ships_spritesheet.xml");
         this.load.atlasXML("tanks", "tanks_spritesheet.png", "tanks_spritesheet.xml");
-        // this.load.image("pirateTiles", "piratePack_tilesheet"); // tiles
+
+        this.load.image("pirateerTiles", "piratePack_tilesheet.png");
+        this.load.tilemapTiledJSON("map", "PirateerSeaMap.json")
 
         // Sound Effects
         this.load.audio("cannonFire", "cannonFire.mp3");
@@ -43,6 +46,13 @@ class Sea extends Phaser.Scene {
         waterRush.play({loop: true, volume: 0.5});
         windAmbience.play({loop: true, volume: 0.5});
         //music.play({loop: true, volume: 0.5});
+
+        // Tilemap
+        this.map = this.add.tilemap("map", 30, 30, 40, 20);
+        this.tileset = this.map.addTilesetImage("pirateer-sea-tileset", "pirateerTiles");
+
+        this.layerSeaBase = this.map.createLayer("SeaBase", this.tileset, 0, 0);
+        this.layerSeaWaves = this.map.createLayer("SeaWaves", this.tileset, 0, 0);
 
         // Sea scene variables
         let my = this.my;
@@ -129,7 +139,12 @@ class Sea extends Phaser.Scene {
 
             this.sound.play("cannonFire");
         }
+/*
+        // Player destruction
+        if(my.sprite.pirateShip.destroyed){
 
+        }
+*/
         my.sprite.pirateShip.update();
 
         // SHOT UPDATES
