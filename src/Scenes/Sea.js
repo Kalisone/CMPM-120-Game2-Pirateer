@@ -279,19 +279,22 @@ class Sea extends Phaser.Scene {
             this.enemyTimer = this.enemyCooldown;
         }
 
-        if(Phaser.Input.Keyboard.JustDown(this.keyP)){
-            this.scene.start("sea");
-        }
-
         // GAME END (Player destruction)
-        if(player.destroyed && my.text.score.visible){
-            if(this.score > hiScore) hiScore = this.score;
-            my.text.endText = this.add.bitmapText(
-                my.sprite.healthTemplate.displayWidth*2,
-                my.sprite.healthTemplate.displayHeight,
-                "BlackChancery",
-                "Your ship has been sunk!\nFinal Score: " + this.score + "\nHigh Score: " + hiScore).setBlendMode(Phaser.BlendModes.ADD).setScale(1.2);
-            my.text.score.visible = false;
+        if(player.destroyed){
+            if(my.text.score.visible){
+                if(this.score > hiScore) hiScore = this.score;
+
+                my.text.endText = this.add.bitmapText(
+                    my.sprite.healthTemplate.displayWidth*2,
+                    my.sprite.healthTemplate.displayHeight,
+                    "BlackChancery",
+                    "Your ship has been sunk!\nFinal Score: " + this.score + "\nHigh Score: " + hiScore + "\n[ P ] to play again").setBlendMode(Phaser.BlendModes.ADD).setScale(1.2);
+                my.text.score.visible = false;
+            }
+            
+            if(Phaser.Input.Keyboard.JustDown(this.keyP)){
+                this.scene.start("sea");
+            }
         }
 
     } // End update()
