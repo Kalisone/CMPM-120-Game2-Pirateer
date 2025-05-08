@@ -6,7 +6,7 @@ class EnemyShip extends Phaser.GameObjects.Sprite {
         super(scene, x, y, texture, typeChart[frame][0]);
 
         this.shots = [];
-        this.maxShots = 12, this.reload = 48, this.reloadTimer = 0;
+        this.maxShots = 12, this.reload = 72, this.reloadTimer = 0;
         this.baseShotDmg = dmg ? dmg : 3;
         this.baseShotSpeed = shotSpeed ? shotSpeed : 12;
 
@@ -89,6 +89,7 @@ class EnemyShip extends Phaser.GameObjects.Sprite {
                 for(let shot of this.shots){
                     shot.shotDmg *= 2;
                 }
+                
                 break;
             case 4: // Blue Cavalier
                 this.hp = 3;

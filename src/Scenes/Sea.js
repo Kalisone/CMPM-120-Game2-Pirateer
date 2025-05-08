@@ -139,17 +139,16 @@ class Sea extends Phaser.Scene {
                 if(!shot.active){
                     shot.x = player.x + (shot.displayWidth / 2);
                     shot.y = player.y;
-                    shot.activate()
+                    shot.activate();
 
                     this.reloadTimer = this.reload;
                     break;
                 }
             }
 
-            // Gun Smoke
+            // Gun FX
             this.add.sprite(player.x + (player.displayHeight/3), player.y).setScale(0.6).play("gunSmoke");
-
-            this.sound.play("cannonFire");
+            this.sound.play("cannonFire", {volume: 0.6});
         }
 
         // Player Health Bar
@@ -214,8 +213,27 @@ class Sea extends Phaser.Scene {
                 this.sound.play("shipSunk");
             }
 
-            // Enemy Shot Updates
-            
+            // Enemy Shot Updatess
+            if (!ship.destroyed && ship.reloadTimer-- <= 0 && ship.active){
+                for(let shot of ship.shots){
+                    if(!shot.active){
+                        shot.x = ship.x - (shot.displayWidth / 2);
+                        shot.y = ship.y;
+                        shot.activate();
+                        break;
+                    }
+                }
+
+                // Gun Smoke
+                this.add.sprite(ship.x - (ship.displayHeight/3), ship.y).setScale(0.6).play("gunSmoke");
+                this.sound.play("cannonFire", {volume: 0.3});
+
+                ship.reloadTimer = ship.reload + this.randRange(0, ship.reload / 10);
+            }
+
+            for(let shot of ship.shots){
+                shot.update();
+            }
         }
 
         // WAVES
