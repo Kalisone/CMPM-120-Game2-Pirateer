@@ -1,9 +1,14 @@
 class EnemyShip extends Phaser.GameObjects.Sprite {
+    curve;
+    
     constructor(scene, x, y, frame, texture, dmg, shotSpeed) {
         if(!texture) texture = "pirateMisc";
         if(!frame) frame = 0;
         
         super(scene, x, y, texture, typeChart[frame][0]);
+
+        this.scene = scene;
+        this.y_OG = 0;
 
         this.shots = [];
         this.maxShots = 12, this.reload = 72, this.reloadTimer = 0;
@@ -34,18 +39,45 @@ class EnemyShip extends Phaser.GameObjects.Sprite {
                 this.shipSpeed = 1;
             }
 
+            // MOVEMENT
             if(this.x > 0 - this.displayHeight/2){
                 this.x -= this.shipSpeed;
             }
+
+            if (this.y < this.displayWidth/2) this.y = this.displayWidth / 2;
+            if (this.y > game.config.height - (this.displayHeight/2)) this.y = game.config.height - (this.displayWidth/2);
             
+            // HANDLE WHEN OFFSCREEN
             if(this.active && this.x < 0 - this.displayHeight/2){
                 this.deactivate();
+            }
+
+            // PATHING
+            if(this.pathfinder && this.type === 2){ // Red Cross
+                if(!this.pathActive){
+                    this.pathActive = true;
+
+                    this.pathfinder.startFollow({
+                        from: 0,
+                        to: 1,
+                        delay: 0,
+                        ease: "Linear",
+                        duration: game.config.width * game.config.fps.target
+                    });
+                }
+
+                this.y = this.pathfinder.y;
+            }
+
+            if(this.type === 5){ // Yellow Mark
+                this.y = this.y_OG + (game.config.height / 10 * Math.sin(this.x / (game.config.width / 20)));
             }
         }
     }
 
     reset(x, y, type){
         this.active = false, this.visible = false, this.destroyed = false;
+        this.pathfinder = null, this.pathActive = false;
 
         /* Ship types in base game:
          * [0] {1, 7, 13, 19}: White Flag; 2 lives (6 HP), 1 spd, 1 pt
@@ -80,12 +112,15 @@ class EnemyShip extends Phaser.GameObjects.Sprite {
             case 2: // Red Cross
                 this.hp = 15;
                 this.shipSpeed = 2;
-                this.points = 3;
+                this.points = 5;
+
+                if(!this.pathfinder) this.createPathfinder();
+
                 break;
             case 3: // Green Sword
                 this.hp = 3;
                 this.shipSpeed = 2;
-                this.points = 1;
+                this.points = 2;
 
                 for(let shot of this.shots){
                     shot.shotDmg *= 2;
@@ -95,7 +130,7 @@ class EnemyShip extends Phaser.GameObjects.Sprite {
             case 4: // Blue Cavalier
                 this.hp = 3;
                 this.shipSpeed = 4;
-                this.points = 1;
+                this.points = 2;
 
                 let directRand = Math.round(Math.random()) + 3;
 
@@ -107,12 +142,14 @@ class EnemyShip extends Phaser.GameObjects.Sprite {
             case 5: // Yellow Mark
                 this.hp = 9;
                 this.shipSpeed = 2;
-                this.points = 2;
+                this.points = 4;
                 this.maxDY = 100;
 
                 for(let shot of this.shots){
                     shot.shotSpeed *= 1.25;
                 }
+
+                this.y_OG = this.y;
 
                 break;
         }
@@ -120,6 +157,43 @@ class EnemyShip extends Phaser.GameObjects.Sprite {
         this.maxHP = this.hp;
 
         this.setFrame(typeChart[this.type][0]);
+    }
+
+    createPathfinder(){
+        let w = game.config.width / 12, h = game.config.height / 6;
+
+        if(Math.round(Math.random()) === 0){
+            this.y = game.config.height/6;
+            this.points = [
+                12*w, 5*h,
+                8*w, 4.3*h,
+                6*w, 3.8*h,
+                3*w, 3*h,
+                1.7*w, 2.5*h,
+                0.7*w, 2.0*h,
+                0.2*w, 1.5*h,
+                -0.2*w, 1*h
+            ]
+        }else{
+            this.y = game.config.height*5/6;
+            this.points = [
+                12*w, 1*h,
+                8*w, 1.7*h,
+                6*w, 2.2*h,
+                3*w, 3*h,
+                1.7*w, 3.5*h,
+                0.7*w, 4.0*h,
+                0.2*w, 4.5*h,
+                -0.2*w, 5*h
+            ]
+        }
+
+        this.curve = new Phaser.Curves.Spline(this.points);
+
+        this.pathfinder = this.scene.add.follower(this.curve, 10, 10, "skullCrossbones").setScale(0.1);
+        this.pathfinder.x = this.curve.points[0].x;
+        this.pathfinder.y = this.curve.points[0].y;
+        this.pathfinder.visible = false;
     }
 
     activate(){
