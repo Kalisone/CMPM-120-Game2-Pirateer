@@ -1,5 +1,3 @@
-const shipTypes = [0, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5];
-
 class Sea extends Phaser.Scene {
     constructor() {
         super("sea");
@@ -197,11 +195,8 @@ class Sea extends Phaser.Scene {
                 player.hp = 0;
 
                 // FX
-                if(!ship.destroyed){
-                    this.add.sprite(ship.x, ship.y).play("hitSmoke");
-                }else{
-                    this.updateScore(ship.points);
-                }
+                this.add.sprite(ship.x, ship.y).play("hitSmoke");
+                this.updateScore(ship.points);
 
                 this.add.sprite(player.x, player.y).play("gunSmoke");
 
