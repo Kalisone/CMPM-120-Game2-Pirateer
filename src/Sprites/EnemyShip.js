@@ -1,5 +1,5 @@
 class EnemyShip extends Phaser.GameObjects.Sprite {
-    constructor(scene, x, y, frame, texture) {
+    constructor(scene, x, y, frame, texture, dmg, shotSpeed) {
         if(!texture) texture = "pirateMisc";
         if(!frame) frame = 0;
         
@@ -7,9 +7,11 @@ class EnemyShip extends Phaser.GameObjects.Sprite {
 
         this.shots = [];
         this.maxShots = 12, this.reload = 48, this.reloadTimer = 0;
+        this.baseShotDmg = dmg ? dmg : 3;
+        this.baseShotSpeed = shotSpeed ? shotSpeed : 12;
 
         for(let i = 0; i < this.maxShots; i++){
-            this.shots.push(new Shot(this, -100, -100));
+            this.shots.push(new Shot(scene, -100, -100, 2));
         }
 
         this.reset(x, y, frame);
@@ -56,6 +58,12 @@ class EnemyShip extends Phaser.GameObjects.Sprite {
 
         this.x = x, this.y = y, this.type = type;
 
+        for (let shot of this.shots){
+            shot.direction = 2;
+            shot.shotSpeed = this.baseShotSpeed;
+            shot.shotDmg = this.baseShotDmg;
+        }
+
         switch(this.type){
             default:
             case 0: // White Flag
@@ -77,17 +85,31 @@ class EnemyShip extends Phaser.GameObjects.Sprite {
                 this.hp = 3;
                 this.shipSpeed = 2;
                 this.points = 1;
+
+                for(let shot of this.shots){
+                    shot.shotDmg *= 2;
+                }
                 break;
             case 4: // Blue Cavalier
                 this.hp = 3;
                 this.shipSpeed = 4;
                 this.points = 1;
+
+                for(let shot of this.shots){
+                    shot.direction = 3;
+                }
+
                 break;
             case 5: // Yellow Mark
                 this.hp = 9;
                 this.shipSpeed = 2;
                 this.points = 2;
-                this.maxDY = 100
+                this.maxDY = 100;
+
+                for(let shot of this.shots){
+                    shot.shotSpeed *= 1.25;
+                }
+
                 break;
         }
 

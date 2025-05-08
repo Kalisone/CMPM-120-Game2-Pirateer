@@ -152,7 +152,7 @@ class Sea extends Phaser.Scene {
             this.sound.play("cannonFire");
         }
 
-        // Player Health
+        // Player Health Bar
         for(let i = my.sprite.playerHP.length-1; i >= 0; i--){
             if(i*my.sprite.shots[0].shotDmg+1 > player.hp){
                 my.sprite.playerHP[i].visible = false;
@@ -167,7 +167,7 @@ class Sea extends Phaser.Scene {
 */
         player.update();
 
-        // SHOT UPDATES
+        // Player Shot Updates
         for(let shot of my.sprite.shots){
             shot.update();
         }
@@ -213,6 +213,9 @@ class Sea extends Phaser.Scene {
                 this.sound.play("playerHit");
                 this.sound.play("shipSunk");
             }
+
+            // Enemy Shot Updates
+            
         }
 
         // WAVES
