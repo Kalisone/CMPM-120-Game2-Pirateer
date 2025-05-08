@@ -67,7 +67,7 @@ class Sea extends Phaser.Scene {
 
         my.sprite.enemies = [];
         // this.maxEnemies & this.enemiesDeployed decremented immediately b/c incremented before first wave
-        this.maxEnemies = 9 + 3 /*+ maxWaves*/, this.enemyCooldown = 36, this.enemyTimer = 0, this.enemiesDeployed = --this.maxEnemies;
+        this.maxEnemies = 9 + 3 /*+ maxWaves*/, this.enemyCooldown = 144, this.enemyTimer = 0, this.enemiesDeployed = --this.maxEnemies;
 
         // ENEMY CREATION
         this.createEnemies(my.sprite.shipTemplate);

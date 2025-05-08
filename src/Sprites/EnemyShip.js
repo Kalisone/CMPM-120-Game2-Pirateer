@@ -66,10 +66,10 @@ class EnemyShip extends Phaser.GameObjects.Sprite {
                     });
                 }
 
-                this.y = this.pathfinder.y;
+                if(!this.destroyed) this.y = this.pathfinder.y;
             }
 
-            if(this.type === 5){ // Yellow Mark
+            if(this.type === 5 && !this.destroyed){ // Yellow Mark
                 this.y = this.y_OG + (game.config.height / 10 * Math.sin(this.x / (game.config.width / 20)));
             }
         }
@@ -99,7 +99,7 @@ class EnemyShip extends Phaser.GameObjects.Sprite {
         switch(this.type){
             default:
             case 0: // White Flag
-                this.hp = 6;
+                this.hp = 9;
                 this.shipSpeed = 1;
                 this.points = 1;
                 this.reloadTimer = Infinity;
@@ -110,7 +110,7 @@ class EnemyShip extends Phaser.GameObjects.Sprite {
                 this.points = 0;
                 break;
             case 2: // Red Cross
-                this.hp = 15;
+                this.hp = 12;
                 this.shipSpeed = 2;
                 this.points = 5;
 
@@ -140,7 +140,7 @@ class EnemyShip extends Phaser.GameObjects.Sprite {
 
                 break;
             case 5: // Yellow Mark
-                this.hp = 9;
+                this.hp = 6;
                 this.shipSpeed = 2;
                 this.points = 4;
                 this.maxDY = 100;
@@ -167,7 +167,7 @@ class EnemyShip extends Phaser.GameObjects.Sprite {
 
         if(Math.round(Math.random()) === 0){
             this.y = game.config.height/6;
-            this.points = [
+            this.waypoints = [
                 12*w, 5*h,
                 8*w, 4.3*h,
                 6*w, 3.8*h,
@@ -179,7 +179,7 @@ class EnemyShip extends Phaser.GameObjects.Sprite {
             ]
         }else{
             this.y = game.config.height*5/6;
-            this.points = [
+            this.waypoints = [
                 12*w, 1*h,
                 8*w, 1.7*h,
                 6*w, 2.2*h,
@@ -191,7 +191,7 @@ class EnemyShip extends Phaser.GameObjects.Sprite {
             ]
         }
 
-        this.curve = new Phaser.Curves.Spline(this.points);
+        this.curve = new Phaser.Curves.Spline(this.waypoints);
 
         this.pathfinder = this.scene.add.follower(this.curve, 10, 10, "skullCrossbones").setScale(0.1);
         this.pathfinder.x = this.curve.points[0].x;
