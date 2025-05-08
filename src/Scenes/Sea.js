@@ -18,7 +18,8 @@ class Sea extends Phaser.Scene {
         this.load.image("skullCrossbones", "skull_crossbones.png");
 
         this.load.image("pirateTiles", "piratePack_tilesheet.png");
-        this.load.tilemapTiledJSON("map", "PirateerSeaMap.json")
+        //this.load.tilemapTiledJSON("map", "PirateerSeaMap.json");
+        this.load.image("seaBackground", "Pirateer Sea.png")
 
         // Sound Effects
         this.load.audio("cannonFire", "cannonFire.mp3");
@@ -46,11 +47,13 @@ class Sea extends Phaser.Scene {
         music.play({loop: true, volume: 0.5});
 
         // Tilemap
-        this.map = this.add.tilemap("map", 30, 30, 40, 20);
-        this.tileset = this.map.addTilesetImage("pirateer-sea", "pirateTiles");
+        //this.map = this.add.tilemap("map", 30, 30, 40, 20);
+        //this.tileset = this.map.addTilesetImage("pirateer-sea", "pirateTiles");
 
-        this.layerSeaBase = this.map.createLayer("Sea-Base", this.tileset, 0, 0);
-        this.layerSeaWaves = this.map.createLayer("Sea-Waves", this.tileset, 0, 0);
+        //this.layerSeaBase = this.map.createLayer("Sea-Base", this.tileset, 0, 0);
+        //this.layerSeaWaves = this.map.createLayer("Sea-Waves", this.tileset, 0, 0);
+        this.add.image(400, 300, "seaBackground");
+        this.background = this.add.tileSprite(400, 300, 1800, 600, "seaBackground");
 
         // Sea scene variables
         let my = this.my;
@@ -127,10 +130,14 @@ class Sea extends Phaser.Scene {
 
         // Score
         my.text.score = this.add.bitmapText(game.config.width * 3/4, my.sprite.healthTemplate.displayHeight, "BlackChancery", "Score: " + this.score).setBlendMode(Phaser.BlendModes.ADD);
+
+        document.getElementById("description").innerHTML = "<h2>Pirateer</h2>-----<br>RULES<br>-----<br>Controls: [W] Steer Left (Move up); [S] - Steer Right (Move down); [SPACE] - Fire;<br>[P] - Play Again (After game end).<br>Destroy as many enemy ships as you can.<br>Some enemy ships are armed. Your ship can take a few of hits from cannonfire, but do not run your vessel into an enemy. Even a shipwreck will destroy your ship.";
     }
 
     update(){
         let my = this.my;
+
+        this.background.tilePositionX += 0.8;
 
         // PLAYER UPDATES
         let player = my.sprite.pirateShip;
