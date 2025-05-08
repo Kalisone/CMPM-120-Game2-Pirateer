@@ -1,3 +1,15 @@
+const shipTypes = [0, 0, 2, 2, 3, 3, 3, 4, 5, 5];
+const typeChart = [
+    ["ship (1).png", "ship (7).png", "ship (13).png", "ship (19).png"],
+    ["ship (2).png", "ship (8).png", "ship (14).png", "ship (20).png"],
+    ["ship (3).png", "ship (9).png", "ship (15).png", "ship (21).png"],
+    ["ship (4).png", "ship (10).png", "ship (16).png", "ship (22).png"],
+    ["ship (5).png", "ship (11).png", "ship (17).png", "ship (23).png"],
+    ["ship (6).png", "ship (12).png", "ship (18).png", "ship (24).png"]
+];
+
+var waterRush, windAmbience, pirateMusic;
+
 class Sea extends Phaser.Scene {
     constructor() {
         super("sea");
@@ -38,13 +50,13 @@ class Sea extends Phaser.Scene {
 
     create(){
         // Ambient audio + music
-        const waterRush = this.sound.add("waterRush");
-        const windAmbience = this.sound.add("windAmbience");
-        const music = this.sound.add("PirateCrew");
+        waterRush = this.sound.add("waterRush");
+        windAmbience = this.sound.add("windAmbience");
+        pirateMusic = this.sound.add("PirateCrew");
 
-        waterRush.play({loop: true, volume: 0.5});
-        windAmbience.play({loop: true, volume: 0.5});
-        music.play({loop: true, volume: 0.5});
+        waterRush.play({loop: true, volume: 1});
+        windAmbience.play({loop: true, volume: 1});
+        pirateMusic.play({loop: true, volume: 1});
 
         // Tilemap
         //this.map = this.add.tilemap("map", 30, 30, 40, 20);
@@ -89,39 +101,43 @@ class Sea extends Phaser.Scene {
         }
 
         // Pirate Ship Gun Smoke
-        this.anims.create({
-            key: "gunSmoke",
-            frames: [
-                {key: "pirateMisc", frame: "explosion3.png"},
-                {key: "pirateMisc", frame: "explosion2.png"},
-                {key: "pirateMisc", frame: "explosion1.png"},
-                {key: "tanks", frame: "smokeWhite2.png"},
-                {key: "tanks", frame: "smokeGrey3.png"},
-                {key: "tanks", frame: "smokeWhite1.png"},
-                {key: "tanks", frame: "smokeGrey2.png"},
-                {key: "tanks", frame: "smokeWhite0.png"},
-                {key: "tanks", frame: "smokeGrey1.png"}
-            ],
-            frameRate: 45,
-            hideOnComplete: true
-        });
-
+        if(!this.anims.get("gunSmoke")){
+            this.anims.create({
+                key: "gunSmoke",
+                frames: [
+                    {key: "pirateMisc", frame: "explosion3.png"},
+                    {key: "pirateMisc", frame: "explosion2.png"},
+                    {key: "pirateMisc", frame: "explosion1.png"},
+                    {key: "tanks", frame: "smokeWhite2.png"},
+                    {key: "tanks", frame: "smokeGrey3.png"},
+                    {key: "tanks", frame: "smokeWhite1.png"},
+                    {key: "tanks", frame: "smokeGrey2.png"},
+                    {key: "tanks", frame: "smokeWhite0.png"},
+                    {key: "tanks", frame: "smokeGrey1.png"}
+                ],
+                frameRate: 45,
+                hideOnComplete: true
+            });
+        }
+        
         // Pirate Ship Hit Smoke
-        this.anims.create({
-            key: "hitSmoke",
-            frames: [
-                {key: "tanks", frame: "smokeYellow3.png"},
-                {key: "tanks", frame: "smokeOrange3.png"},
-                {key: "tanks", frame: "smokeWhite2.png"},
-                {key: "tanks", frame: "smokeGrey3.png"},
-                {key: "tanks", frame: "smokeWhite1.png"},
-                {key: "tanks", frame: "smokeGrey2.png"},
-                {key: "tanks", frame: "smokeWhite0.png"},
-                {key: "tanks", frame: "smokeGrey1.png"}
-            ],
-            frameRate: 45,
-            hideOnComplete: true
-        });
+        if(!this.anims.get("hitSmoke")){
+            this.anims.create({
+                key: "hitSmoke",
+                frames: [
+                    {key: "tanks", frame: "smokeYellow3.png"},
+                    {key: "tanks", frame: "smokeOrange3.png"},
+                    {key: "tanks", frame: "smokeWhite2.png"},
+                    {key: "tanks", frame: "smokeGrey3.png"},
+                    {key: "tanks", frame: "smokeWhite1.png"},
+                    {key: "tanks", frame: "smokeGrey2.png"},
+                    {key: "tanks", frame: "smokeWhite0.png"},
+                    {key: "tanks", frame: "smokeGrey1.png"}
+                ],
+                frameRate: 45,
+                hideOnComplete: true
+            });
+        }
 
         // Pirate Ship Health
         for(let i = 0; i < my.sprite.pirateShip.hp / my.sprite.shots[0].shotDmg; i++){
@@ -300,6 +316,10 @@ class Sea extends Phaser.Scene {
             }
             
             if(Phaser.Input.Keyboard.JustDown(this.keyP)){
+                waterRush.stop();
+                windAmbience.stop();
+                pirateMusic.stop();
+
                 this.scene.start("sea");
             }
         }
