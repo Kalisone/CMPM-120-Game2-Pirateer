@@ -8,7 +8,7 @@ class Sea extends Phaser.Scene {
         this.playerX_OG = 100;
         this.playerY_OG = game.config.height / 2;
 
-        this.score = 0, this.shipScale = 0.6;
+        this.shipScale = 0.6;
     }
 
     preload() {
@@ -33,8 +33,8 @@ class Sea extends Phaser.Scene {
         // Music
         this.load.audio("PirateCrew", "PirateCrew_RossBugden.mp3");
 
-        // Font
-        //this.load.bitmapFont();
+        // Text
+        this.load.bitmapFont("BlackChancery", "bitmapBlackChancery_0.png", "bitmapBlackChancery_0.fnt");
     }
 
     create(){
@@ -60,7 +60,7 @@ class Sea extends Phaser.Scene {
         my.sprite.shipTemplate.visible = false;
         my.sprite.healthTemplate = this.add.sprite(-100, -100, "skullCrossbones").setScale(0.05);
 
-        this.wave = 1;
+        this.score = 0, this.wave = 1;
 
         my.sprite.playerHP = [];
 
@@ -126,6 +126,9 @@ class Sea extends Phaser.Scene {
         for(let i = 0; i < my.sprite.pirateShip.hp / my.sprite.shots[0].shotDmg; i++){
             my.sprite.playerHP.push(this.add.sprite((i+1)*(my.sprite.healthTemplate.displayWidth*1.5), my.sprite.healthTemplate.displayHeight, "skullCrossbones").setScale(0.05));
         }
+
+        // Score
+        my.text.score = this.add.bitmapText(game.config.width * 3/4, my.sprite.healthTemplate.displayHeight, "BlackChancery", "Score: " + this.score).setBlendMode(Phaser.BlendModes.ADD);
     }
 
     update(){
@@ -207,7 +210,7 @@ class Sea extends Phaser.Scene {
             }
 
             // Enemy Shots
-            if (!ship.destroyed && ship.reloadTimer-- <= 0 && ship.active){
+            if (!player.destroyed && !ship.destroyed && ship.reloadTimer-- <= 0 && ship.active){
                 for(let shot of ship.shots){
                     if(!shot.active){
                         shot.x = ship.x - (shot.displayWidth / 2);
@@ -284,20 +287,24 @@ class Sea extends Phaser.Scene {
         if(Phaser.Input.Keyboard.JustDown(this.keyP)){
             this.scene.start("sea");
         }
-      
-/*
+
         // GAME END (Player destruction)
-        if(player.destroyed){
-            
+        if(player.destroyed && my.text.score.visible){
+            if(this.score > hiScore) hiScore = this.score;
+            my.text.endText = this.add.bitmapText(
+                my.sprite.healthTemplate.displayWidth*2,
+                my.sprite.healthTemplate.displayHeight,
+                "BlackChancery",
+                "Your ship has been sunk!\nFinal Score: " + this.score + "\nHigh Score: " + hiScore).setBlendMode(Phaser.BlendModes.ADD).setScale(1.2);
+            my.text.score.visible = false;
         }
-*/
+
     } // End update()
 
     // HELPER FUNCTIONS
     createEnemies(shipTemplate){
         let my = this.my;
         for (let i=my.sprite.enemies.length; i<this.maxEnemies; i++){
-            //let shipConfig = shipConfig();
             let rx = game.config.width + shipTemplate.displayHeight / 2 + this.randRange(0, game.config.width / 8);
             let ry = this.randRange(shipTemplate.displayWidth, game.config.height - shipTemplate.displayWidth);
 
@@ -323,6 +330,6 @@ class Sea extends Phaser.Scene {
 
         let my = this.my;
         this.score += points;
-        //my.text.score.setText("Score " + this.score);
+        my.text.score.setText("Score: " + this.score);
     }
 }

@@ -70,6 +70,7 @@ class EnemyShip extends Phaser.GameObjects.Sprite {
                 this.hp = 6;
                 this.shipSpeed = 1;
                 this.points = 1;
+                this.reloadTimer = Infinity;
                 break;
             case 1: // Pirate Ship
                 this.hp = 15;

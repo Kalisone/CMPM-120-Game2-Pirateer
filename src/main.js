@@ -37,7 +37,7 @@ let config = {
 }
 
 // Global variables; maxWaves for if future development
-var maxWaves = Infinity, totalScore = 0;
+var maxWaves = Infinity, hiScore = 0;
 
 const game = new Phaser.Game(config);
 
