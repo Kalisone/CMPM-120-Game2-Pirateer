@@ -119,7 +119,7 @@ class Sea extends Phaser.Scene {
                 hideOnComplete: true
             });
         }
-        
+
         // Pirate Ship Hit Smoke
         if(!this.anims.get("hitSmoke")){
             this.anims.create({
@@ -197,7 +197,6 @@ class Sea extends Phaser.Scene {
             for(let shot of my.sprite.shots){
                 if(!ship.destroyed && this.collides(ship, shot)){
                     ship.hp -= shot.shotDmg;
-                    shot.deactivate();
 
                     // FX
                     this.add.sprite(shot.x, shot.y).setScale(0.6).play("hitSmoke");
@@ -209,6 +208,8 @@ class Sea extends Phaser.Scene {
                     }else{
                         this.sound.play("enemyHit");
                     }
+
+                    shot.deactivate();
                 }
             }
 
@@ -251,7 +252,6 @@ class Sea extends Phaser.Scene {
 
                 if(!player.destroyed && this.collides(player, shot)){
                     player.hp -= shot.shotDmg;
-                    shot.deactivate();
 
                     // FX
                     this.add.sprite(shot.x, shot.y).setScale(0.6).play("hitSmoke");
@@ -262,6 +262,8 @@ class Sea extends Phaser.Scene {
                     }else{
                         this.sound.play("playerHit");
                     }
+
+                    shot.deactivate();
                 }
             }
         }
