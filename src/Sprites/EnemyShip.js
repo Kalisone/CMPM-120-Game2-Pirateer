@@ -149,6 +149,9 @@ class EnemyShip extends Phaser.GameObjects.Sprite {
                     shot.shotSpeed *= 1.25;
                 }
 
+                if(this.y < game.config.height/4) this.y = game.config.height/4;
+                if(this.y > game.config.height/4) this.y = game.config.height * 3/4;
+
                 this.y_OG = this.y;
 
                 break;
