@@ -131,7 +131,7 @@ class Sea extends Phaser.Scene {
     update(){
         let my = this.my;
 
-        // PIRATE UPDATES
+        // PLAYER UPDATES
         let player = my.sprite.pirateShip;
         // Cannon Fire
         if(!player.destroyed && this.reloadTimer-- <= 0 && this.keySpace.isDown) {
@@ -158,12 +158,6 @@ class Sea extends Phaser.Scene {
             }
         }
 
-/*
-        // Player destruction
-        if(player.destroyed){
-
-        }
-*/
         player.update();
 
         // Player Shot Updates
@@ -171,20 +165,19 @@ class Sea extends Phaser.Scene {
             shot.update();
         }
 
-        // ENEMY UPDATES
+        // ENEMY UPDATES + COLLISIONS
         for(let ship of my.sprite.enemies){
             ship.update();
 
-            // Collision detection + handling w/ player shots
+            // Player Shots Collision
             for(let shot of my.sprite.shots){
                 if(!ship.destroyed && this.collides(ship, shot)){
-                    // Hit Animation
-                    this.hitSmoke = this.add.sprite(shot.x, shot.y).setScale(0.6).play("hitSmoke");
-                    
                     ship.hp -= shot.shotDmg;
                     shot.deactivate();
 
-                    // Death Animations & sounds
+                    // FX
+                    this.add.sprite(shot.x, shot.y).setScale(0.6).play("hitSmoke");
+
                     if(ship.hp <= 0){
                         this.sound.play("shipSunk");
                         this.add.sprite(ship.x, ship.y).play("gunSmoke");
@@ -195,25 +188,25 @@ class Sea extends Phaser.Scene {
                 }
             }
 
-            // Collision detection + handling w/ player
+            // Enemy Ships Collision
             if(!player.destroyed && this.collides(ship, player)){
+                ship.hp = 0;
+                player.hp = 0;
+
+                // FX
                 if(!ship.destroyed){
-                    this.destroyedSmoke = this.add.sprite(ship.x, ship.y).play("hitSmoke");
+                    this.add.sprite(ship.x, ship.y).play("hitSmoke");
                 }else{
                     this.updateScore(ship.points);
                 }
 
-                ship.hp = 0;
-                player.hp = 0;
-
-                // Animations & sounds
-                this.playerSmoke = this.add.sprite(player.x, player.y).play("gunSmoke");
+                this.add.sprite(player.x, player.y).play("gunSmoke");
 
                 this.sound.play("playerHit");
                 this.sound.play("shipSunk");
             }
 
-            // Enemy Shot Updatess
+            // Enemy Shots
             if (!ship.destroyed && ship.reloadTimer-- <= 0 && ship.active){
                 for(let shot of ship.shots){
                     if(!shot.active){
@@ -224,15 +217,31 @@ class Sea extends Phaser.Scene {
                     }
                 }
 
-                // Gun Smoke
+                ship.reloadTimer = ship.reload + this.randRange(0, ship.reload / 10);
+                
+                // FX
                 this.add.sprite(ship.x - (ship.displayHeight/3), ship.y).setScale(0.6).play("gunSmoke");
                 this.sound.play("cannonFire", {volume: 0.3});
-
-                ship.reloadTimer = ship.reload + this.randRange(0, ship.reload / 10);
             }
 
+            // Enemy Shots Update & Collision
             for(let shot of ship.shots){
                 shot.update();
+
+                if(!player.destroyed && this.collides(player, shot)){
+                    player.hp -= shot.shotDmg;
+                    shot.deactivate();
+
+                    // FX
+                    this.add.sprite(shot.x, shot.y).setScale(0.6).play("hitSmoke");
+
+                    if(player.hp <= 0){
+                        this.sound.play("shipSunk");
+                        this.add.sprite(ship.x, ship.y).play("gunSmoke");
+                    }else{
+                        this.sound.play("playerHit");
+                    }
+                }
             }
         }
 
@@ -275,6 +284,13 @@ class Sea extends Phaser.Scene {
         if(Phaser.Input.Keyboard.JustDown(this.keyP)){
             this.scene.start("sea");
         }
+      
+/*
+        // GAME END (Player destruction)
+        if(player.destroyed){
+            
+        }
+*/
     } // End update()
 
     // HELPER FUNCTIONS
